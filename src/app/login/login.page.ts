@@ -71,6 +71,7 @@ export class LoginPage implements OnInit {
 
         },
         error => {
+          this.authService.http_error(error);
           this.alertService.presentToast("Invalid App Key"); 
         },
         () => {
@@ -113,6 +114,8 @@ export class LoginPage implements OnInit {
           let response:any = data;
           this.storage.set('hero', response);
 
+          this.authService.log(response.data.id, 'login', 'You have been successfully logged in!');
+
           this.account.user = response.data;
 
           this.http.post(this.env.HERO_API + 'account_settings/byUser', { user_id: this.account.user.id, app_key: this.env.APP_ID })
@@ -131,6 +134,7 @@ export class LoginPage implements OnInit {
                 },error => { 
                   this.alertService.presentToast("Server not responding!");
                   console.log(error);
+                  this.authService.http_error(error);
                 },() => { 
               });  
               // console.log(this.account.settings);
@@ -145,6 +149,7 @@ export class LoginPage implements OnInit {
                 },error => { 
                   this.alertService.presentToast("Server not responding!");
                   console.log(error);
+                  this.authService.http_error(error);
                 },() => { 
               });  
             },() => { 
@@ -169,9 +174,6 @@ export class LoginPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.http.post(this.env.HERO_API + 'check/server',{}).subscribe(data => { },error => { this.alertService.presentToast("Server not found. Check your internet connection."); });
-    this.http.post(this.env.API_URL + 'check/server',{}).subscribe(data => { },error => { this.alertService.presentToast("Server not found. Check your internet connection."); });  
-
     this.authService.getToken().then(() => {
       if(this.authService.isLoggedIn) {
         this.navCtrl.navigateRoot('/tabs/home');

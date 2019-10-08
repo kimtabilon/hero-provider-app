@@ -33,6 +33,7 @@
         <ion-icon name="settings"></ion-icon>
         <ion-label>Settings</ion-label>
       </ion-segment-button>
+      
       <ion-segment-button value="reviews">
         <ion-icon name="mail"></ion-icon>
         <ion-label>Reviews</ion-label>
@@ -45,9 +46,6 @@
   </div>  
   
   <ion-list lines="none" *ngIf="page=='profile'">
-
-
-
     <div class="field-outer-wrap">
       <ion-row padding class="form-header"><ion-col class="text-center">ACCOUNT</ion-col></ion-row>
       <ion-row padding class="field-wrap">
@@ -258,21 +256,9 @@
   <ion-list *ngIf="page == 'logs'">
     <ion-row padding class="form-header"><ion-col class="text-center">ACTIVITY LOG</ion-col></ion-row>
 
-    <ion-item-divider>
-      <ion-label>
-        Profile update last August 29, 2019
-      </ion-label>
-    </ion-item-divider>
-
-    <ion-item-divider>
-      <ion-label>
-        Job confirm for Battery Replacement
-      </ion-label>
-    </ion-item-divider>
-
-    <ion-item-divider>
-      <ion-label>
-        Job cancelled for Room Service
+    <ion-item-divider *ngFor="let log of logs">
+      <ion-label text-wrap>
+        {{log.created_at}} {{log.label}}
       </ion-label>
     </ion-item-divider>
   </ion-list>  

@@ -32,8 +32,9 @@
     <ion-row></ion-row>
     <ion-row padding class="form-header"><ion-col class="text-center">Rate per Hour</ion-col></ion-row>
     <ion-row padding class="field-wrap">
-      <ion-input  type="number" class="field" [(ngModel)]="heroOption.pay_per" placeholder="Input Rate"></ion-input>
       <ion-label class="field-label"><ion-icon name="add" class="field-icon"></ion-icon></ion-label>
+      <ion-input  type="number" class="field" [(ngModel)]="heroOption.pay_per" placeholder="Input Rate"></ion-input>
+      
     </ion-row>
 
     <button class="btn btn-login" (click)="tapNext()" >SAVE</button>

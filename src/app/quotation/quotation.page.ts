@@ -131,13 +131,15 @@ export class QuotationPage implements OnInit {
     console.log(this.quote);
     if(this.quote.amount > 0) {
       this.http.post(this.env.HERO_API + 'quotations/store',this.quote)
-        .subscribe(data => { 
+      .subscribe(data => { 
+          this.authService.log(this.user.id, 'quotation_submitted', 'You quotation has been sent to the client.');
+          this.alertService.presentToast("You quotation has been sent to the client.");
       },error => { 
         this.loading.dismiss();
         // this.alertService.presentToast("Server not responding!"); 
         this.alertService.presentToast("Client removed this job.");
         this.tapDeny();
-
+        this.authService.http_error(error);
         console.log(error);
       },() => { 
         this.loading.dismiss();

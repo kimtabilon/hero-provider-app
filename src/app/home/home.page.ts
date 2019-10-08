@@ -101,6 +101,7 @@ export class HomePage implements OnInit {
         },error => { 
           console.log(error);
           this.loading.dismiss(); 
+          this.authService.http_error(error);
         });
 
       this.storage.get('app').then((val) => {

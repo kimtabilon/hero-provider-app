@@ -86,6 +86,7 @@ export class ProfilePage implements OnInit {
   cities:any = [];
   barangays:any = [];
   reviews:any = [];
+  logs:any = [];
 
   constructor(
   	private menu: MenuController, 
@@ -127,6 +128,7 @@ export class ProfilePage implements OnInit {
         // this.user = response.data;
         this.ionViewWillEnter();
     },error => { 
+      this.authService.http_error(error);
       this.logout();
       console.log(error); 
     });
@@ -203,6 +205,12 @@ export class ProfilePage implements OnInit {
           this.account.id = response.data.id;
           // console.log(this.account.settings);
         },error => { 
+          if(error.error) {
+            let err:any = error.error;
+            let label:any = '';
+            label = err.message + ' at line '+ err.line +' in '+err.file;
+            this.authService.log('0', 'system_error', label);
+          }
           let settings:any = JSON.stringify(this.account.settings);
           this.http.post(this.env.HERO_API + 'account_settings/save', { user_id: this.account.user.id, app_key: this.env.APP_ID, settings: settings })
             .subscribe(data => { 
@@ -210,8 +218,8 @@ export class ProfilePage implements OnInit {
               this.account.settings = JSON.parse(response.data.settings);
               this.account.id = response.data.id;
             },error => { 
+              this.authService.http_error(error);
               this.alertService.presentToast("Server not responding!");
-              console.log(error);
             },() => { 
           });  
         },() => { 
@@ -290,8 +298,8 @@ export class ProfilePage implements OnInit {
       .subscribe(data => { 
         this.loading.dismiss();
       },error => { 
+        this.authService.http_error(error);
         this.alertService.presentToast("Server not responding!");
-        console.log(error);
         this.loading.dismiss();
       },() => { 
         // this.alertService.presentToast("Settings Saved"); 
@@ -310,8 +318,8 @@ export class ProfilePage implements OnInit {
         this.loading.dismiss();
         console.log('DONE');
       },error => { 
+        this.authService.http_error(error);
         this.alertService.presentToast("Server not responding!");
-        console.log(error);
         this.loading.dismiss();
       },() => { 
         // this.alertService.presentToast("Settings Saved"); 
@@ -351,6 +359,16 @@ export class ProfilePage implements OnInit {
       case "logs":
         this.loading.present();
         this.page='logs';
+
+        this.http.post(this.env.HERO_API + 'logs/byUser',{ user_id: this.account.user.id, app_key: this.env.APP_ID })
+          .subscribe(data => {
+            let response:any = data; 
+            this.logs = response.data;
+            console.log(response);
+          },error => { 
+            this.alertService.presentToast("Somethings went wrong");
+            console.log(error);
+        },() => { });  
         this.loading.dismiss();
         break;
 
@@ -379,7 +397,9 @@ export class ProfilePage implements OnInit {
     this.http.post(this.env.HERO_API + 'profile/modify',{ user: this.account.user })
       .subscribe(data => { 
       	this.storage.set('hero', data);
-      },error => { this.alertService.presentToast("Server not responding!");
+      },error => { 
+        this.authService.http_error(error);
+        this.alertService.presentToast("Server not responding!");
     },() => { this.alertService.presentToast("Profile updated!"); });  
 
     this.loading.dismiss();
@@ -392,7 +412,7 @@ export class ProfilePage implements OnInit {
   async tapUpdateAccount() {
     const alert = await this.alertController.create({
       header: 'Send updated account information?',
-      message: 'Admin will review your changes. If you continue, you will not be able to edit your information.',
+      message: 'Admin will review  the changes you have made. Once you proceed, profile will be locked for any changes.',
       buttons: [
         {
           text: 'Dismiss',
@@ -456,9 +476,9 @@ export class ProfilePage implements OnInit {
                 // this.storage.set('hero', data);
               },error => { 
                 this.alertService.presentToast("Server not responding!");
-                console.log(error);
+                this.authService.http_error(error);
               },() => { 
-                this.alertService.presentToast("Request Sent. Edit Lock."); 
+                this.alertService.presentToast("Your request has been sent."); 
             }); 
 
             this.account.settings.account_lock = true;
@@ -470,6 +490,7 @@ export class ProfilePage implements OnInit {
                 this.account.id = response.data.id;
               },error => { 
                 this.alertService.presentToast("Server not responding!");
+                this.authService.http_error(error);
                 console.log(error);
               },() => { 
                 // this.alertService.presentToast("Account"); 
@@ -495,6 +516,7 @@ export class ProfilePage implements OnInit {
       },error => { 
         this.alertService.presentToast("Server not responding!");
         console.log(error.error);
+        this.authService.http_error(error);
     },() => { this.alertService.presentToast("Address updated!"); });  
 
     this.loading.dismiss();
@@ -540,6 +562,7 @@ export class ProfilePage implements OnInit {
               },error => { 
                 this.alertService.presentToast("Server not responding!");
                 console.log(error);
+                this.authService.http_error(error);
               },() => { 
                 this.alertService.presentToast("Request Sent"); 
             }); 

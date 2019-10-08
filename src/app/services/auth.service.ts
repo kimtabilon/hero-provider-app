@@ -43,7 +43,7 @@ export class AuthService {
 
   login(email: String, password: String) {
     return this.http.post(this.env.API_URL + 'hero/login',
-      {email: email, password: password}
+      {email: email, password: password, app_key: this.env.APP_ID}
     ).pipe(
       tap(token => {
         this.storage.set('token', token)
@@ -108,7 +108,8 @@ export class AuthService {
 
       	email: email,
       	password: password,
-      	password_confirm: password_confirm
+      	password_confirm: password_confirm,
+        app_key: this.env.APP_ID
       }
     )
   }
@@ -120,6 +121,8 @@ export class AuthService {
 
       this.account.user_id = this.account.user.id;
       this.account.app_key = this.env.APP_ID;
+
+      this.log(this.account.user.id, 'logout', 'You have been successfully logged out!');
 
       this.http.post(this.env.HERO_API + 'account_settings/byUser', { user_id: this.account.user.id, app_key: this.env.APP_ID })
         .subscribe(data => { 
@@ -158,7 +161,7 @@ export class AuthService {
         },() => { 
           // this.alertService.presentToast("Settings saved."); 
       }); 
-    });    
+    });     
     this.storage.remove("token");
     this.storage.remove("hero");
     this.isLoggedIn = false;
@@ -193,5 +196,38 @@ export class AuthService {
         this.isLoggedIn=false;
       }
     );
+  }
+
+  log(user_id, type, label) {
+
+    this.storage.get('app').then((val) => {
+      let app:any = val.data;
+
+      this.http.post(this.env.HERO_API + 'logs/save', 
+          { 
+            app_id: app.id,
+            user_id: user_id, 
+            type: type,
+            label: label
+          }
+        )
+        .subscribe(data => { 
+          let response:any = data;
+        },error => { 
+          this.alertService.presentToast("Server not responding!");
+          console.log(error);
+        },() => { 
+      });
+    }); 
+        
+  }
+
+  http_error(error) {
+    if(error.error) {
+      let err:any = error.error;
+      let label:any = '';
+      label = err.message + ' at line '+ err.line +' in '+err.file;
+      this.log('0', 'system_error', label);
+    }
   }
 }

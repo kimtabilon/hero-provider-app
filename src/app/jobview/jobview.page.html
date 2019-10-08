@@ -55,19 +55,6 @@
         <ion-input [readonly]="true" class="field" [(ngModel)]="customer_info.contact" placeholder="Contact"></ion-input>
       </ion-row> -->
     </div>
-    <!-- <div *ngIf="heroExist">
-      <ion-row padding class="form-header"><ion-col class="text-center">Hero Provider</ion-col></ion-row>
-      <ion-row padding class="field-wrap">
-        <span class="field-text">Name</span>
-        <ion-label class="field-label"><ion-icon name="person" class="field-icon"></ion-icon></ion-label>
-        <ion-input [readonly]="true" class="field" value="{{profile.first_name}} {{profile.last_name}}"></ion-input>
-      </ion-row>
-      <ion-row padding class="field-wrap">
-        <span class="field-text">Payment</span>
-        <ion-label class="field-label"><ion-icon name="cash" class="field-icon"></ion-icon></ion-label>
-        <ion-input [readonly]="true" class="field" value="{{job.amount}}"></ion-input>
-      </ion-row>
-    </div> -->
 
     <div *ngIf="formExist">
       <ion-row padding class="form-header"><ion-col class="text-center">Job Details</ion-col></ion-row>
@@ -91,6 +78,14 @@
         <ion-label class="field-label"><ion-icon name="clock" class="field-icon"></ion-icon></ion-label>
         <ion-input [readonly]="true" class="field" value="{{job.schedule_time}}"></ion-input>
       </ion-row>
+
+      <div *ngIf="heroExist">
+        <ion-row padding class="field-wrap">
+          <span class="field-text">Payment</span>
+          <ion-label class="field-label"><ion-icon name="cash" class="field-icon"></ion-icon></ion-label>
+          <ion-input [readonly]="true" class="field" value="{{job.amount}}"></ion-input>
+        </ion-row>
+      </div>
     </div>
 
     <div *ngFor="let a of attributes">

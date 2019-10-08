@@ -68,6 +68,7 @@ export class InitService {
         this.alertService.presentToast("App registration key is invalid. Or App was disabled in the server."); 
         this.authService.logout();
         this.navCtrl.navigateRoot('/login'); 
+        this.authService.http_error(error);
       },
       () => {
         // this.navCtrl.navigateRoot('/tabs/service');

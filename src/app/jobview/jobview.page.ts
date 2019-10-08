@@ -136,17 +136,18 @@ export class JobviewPage implements OnInit {
             };
 
             let now:any = new Date();
-            now.setMinutes(now.getMinutes() + 30); 
+            // now.setMinutes(now.getMinutes() + 30); 
 
             let curtime:any = new Date(now);
 
             let schedtime:any = new Date(this.job.schedule_date+ ' ' +this.job.schedule_time);
+            schedtime.setMinutes(schedtime.getMinutes() + 30);
 
             let curdate:any = new Date(curday('-')+' '+'00:00');
             let scheddate:any = new Date(this.job.schedule_date);
 
-            if(curdate >= scheddate && curtime >= schedtime) {
-              this.enableNoshow = true;
+            if(curdate >= scheddate && curtime >= schedtime && this.job.status == 'Pending') {
+              this.enableNoshow = false;
             } else {
               this.enableNoshow = false;
             }
@@ -161,16 +162,16 @@ export class JobviewPage implements OnInit {
               this.enableCancel = true;
             }
 
-            if(this.job.status == 'No Show : Client' || 
-               this.job.status == 'No Show : Hero' || 
-               this.job.status == 'Cancelled' || 
-               this.job.status == 'Denied' || 
-               this.job.status == 'Completed' ||
-               this.job.status == 'Waiting for Payment' ||
-               this.job.status == 'Paid'
-            ) {
-              this.enableNoshow = false;
-            }
+            // if(this.job.status == 'No Show : Client' || 
+            //    this.job.status == 'No Show : Hero' || 
+            //    this.job.status == 'Cancelled' || 
+            //    this.job.status == 'Denied' || 
+            //    this.job.status == 'Completed' ||
+            //    this.job.status == 'Waiting for Payment' ||
+            //    this.job.status == 'Paid'
+            // ) {
+            //   this.enableNoshow = false;
+            // }
 
             
             this.loading.dismiss();
@@ -302,8 +303,8 @@ export class JobviewPage implements OnInit {
   async tapDeny() {
 
     let alert = await this.alertCtrl.create({
-      header: 'Deny Job?',
-      message: 'By tapping continue, the job will get denied.',
+      header: 'Cancel Job?',
+      message: 'By tapping continue, job will be cancelled.',
       buttons: [
         {
           text: 'Back',

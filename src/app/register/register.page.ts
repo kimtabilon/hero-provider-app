@@ -267,20 +267,22 @@ export class RegisterPage implements OnInit {
   async notifyRegistrationSuccess(email, password) {
     let alert = await this.alertCtrl.create({
       header: 'Success',
-      message: 'You are now registered! Check your email to activate account. If you dont recieved email from us, tap Resend.',
+      message: 'You are now registered! Check your e-mail for account activation. If you don\'t receive an e-mail from us, tap Resend.',
       buttons: [
         {
           text: 'Resend',
           cssClass: 'secondary',
           handler: () => {
             this.notifyRegistrationSuccess(email, password);
-            this.http.post(this.env.API_URL + 'hero/mail/resendactivation',{password: password, email: email})
+            this.http.post(this.env.API_URL + 'hero/mail/resendactivation',{password: password, email: email, app_key: this.env.APP_ID})
               .subscribe(data => {
                   let response:any = data;
                   this.loading.dismiss();
                   this.alertService.presentToast("Check your Email for your Activation Link");
+                  this.authService.log(response.data.id, 'resend_activation', 'Resend activation link');
               },error => { 
                 console.log(error);
+                this.authService.http_error(error);
                 this.loading.dismiss();
                 this.alertService.presentToast("Account not Found");
               });
@@ -303,7 +305,7 @@ export class RegisterPage implements OnInit {
     this.signup_btn = 'Please wait...';
     if(this.validations_form.valid) {
 
-      this.http.post(this.env.API_URL + 'customer/mail/check',{email: values.email})
+      this.http.post(this.env.API_URL + 'hero/mail/check',{email: values.email})
       .subscribe(data => {
         this.authService.register(
             values.first_name, 
@@ -328,6 +330,8 @@ export class RegisterPage implements OnInit {
             values.matching_passwords.confirm_password
           ).subscribe(
           data => {
+            let response:any = data;
+            this.authService.log(response.data.hero.id, 'registered', 'New account created');
             this.loading.dismiss();
             this.notifyRegistrationSuccess(values.email, values.matching_passwords.password);
           },
@@ -336,6 +340,7 @@ export class RegisterPage implements OnInit {
             this.loading.dismiss();
             this.alertService.presentToast('Email already exist.');
             console.log(error);
+            this.authService.http_error(error);
           },
           () => {
             
@@ -345,6 +350,7 @@ export class RegisterPage implements OnInit {
         this.notifyEmailExist();
         this.loading.dismiss(); 
         this.signup_btn = 'CREATE ACCOUNT';
+        this.authService.http_error(error);
       });
 
     } else {
@@ -368,8 +374,6 @@ export class RegisterPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.http.post(this.env.HERO_API + 'check/server',{}).subscribe(data => { },error => { this.alertService.presentToast("Server not found. Check your internet connection."); });
-    this.http.post(this.env.API_URL + 'check/server',{}).subscribe(data => { },error => { this.alertService.presentToast("Server not found. Check your internet connection."); });  
 
     let eightenyearsAgo = function(sp){
       let today:any = new Date();

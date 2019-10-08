@@ -1,4 +1,5 @@
 :host {
+
   $brown: #64492e;
   $lbrown: #c0976b;
   $dark-blue: #101622;
@@ -7,17 +8,11 @@
   $menu-blue: #101622;
   $item-blue: #314e70;
   $blue: #2d4b67;
-  $gold: #d9a978;
+  $gold: #93c967;
 
   ion-content {
-  	.body {
-    	min-height:100%;
-  		background:linear-gradient(0deg,rgba(20,28,47,.8),rgba(20,28,47,.9)),url('../../assets/img/bg-img-sm.png');
-  		background-size:cover;
-  		width: 100%;
-  	}
 
-  	.btn {
+    .btn {
       border-radius: 40px;
       display: block;
       width: 90%;
@@ -32,54 +27,50 @@
       color: $brown;
     }
 
-  	.btn-signup {
+    .forget-pass {
+      color: #fff;
+      padding: 10px 25px;
+      text-align: right;
+      margin-top: 20px;
+    }
+
+    .custom-loader-class {
+      --background: none;
+    }
+
+    .btn-signup {
       background: none;
       border: 2px solid $gold;
       color: #eee;
     }
+    .no-margin-top {
+      margin-top: -10px;
+    }
 
-  	.form-field {
-  		padding: 0 20px;
-  		color: $gold;
-  		margin-bottom: 20px;
+    .form-field {
+      padding: 0 20px;
+      color: $gold;
+      margin-bottom: 20px;
 
-  		.icon {
-  			margin-bottom: -12px;
-  		}
-
-      .calendar {
-        margin-bottom: -20px;
-      }
-
-      .text-label {
-        font-size: 8pt;
-        color: $gold;
+      .icon {
         margin-bottom: -12px;
-        margin-top: 10px;
       }
 
-  		.field {
-        color: $gold;
-  			border-bottom: 1px solid $gold;
-        width: 100%;
-  		}
-  	}
-
-    .with-margin-top {
-      margin-top: 20px;
+      .field {
+        border-bottom: 1px solid $gold;
+        border-top: none;
+        border-right: none;
+        border-left: none;
+      }
     }
-
-    .with-margin-bottom {
-      margin-bottom: 10px;
-    }
-	    
-	.login {
+      
+  .login {
     .logo-wrap {
       text-align: center;
 
       .logo {
         margin-top: 20px;
-        width: 140px;
+        width: 70px;
       }
 
       .label {
@@ -93,7 +84,7 @@
       }
     }
       
-  }
+  } 
 
   }
 

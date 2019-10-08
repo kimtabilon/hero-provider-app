@@ -125,8 +125,8 @@ export class OptionPage implements OnInit {
       if(option.enable_quote == 'Yes') {
 
         const alert = await this.alertController.create({
-          header: 'Save '+option.name+'?',
-          message: 'For the meantime, service will be inactive. Admin will notify you when its active. Continue if you want to save this service.',
+          header: 'Save '+option.name+' Service?',
+          message: 'For the meantime, this service will be inactive. Admin will notify you once this service has been activated. Continue if you want to save this service.',
           buttons: [
             {
               text: 'Dismiss',

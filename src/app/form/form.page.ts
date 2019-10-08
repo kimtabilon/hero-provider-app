@@ -150,6 +150,7 @@ export class FormPage implements OnInit {
                 this.http.post(this.env.HERO_API + 'hero_options/save',this.heroOption)
                 .subscribe(data => { 
                   this.heroOption.pay_per = '';
+                  this.authService.log(this.user.id, 'new_service', 'New Service Added');
                 },error => { 
                   console.log(error);
                   this.alertService.presentToast("Server not responding!"); 
