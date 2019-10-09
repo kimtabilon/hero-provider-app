@@ -21,7 +21,8 @@ const routes: Routes = [
   { path: 'loginreset', loadChildren: './loginreset/loginreset.module#LoginresetPageModule' },
   { path: 'schedule', loadChildren: './schedule/schedule.module#SchedulePageModule' },
   { path: 'term', loadChildren: './term/term.module#TermPageModule' },
-  { path: 'resendemail', loadChildren: './resendemail/resendemail.module#ResendemailPageModule' }
+  { path: 'resendemail', loadChildren: './resendemail/resendemail.module#ResendemailPageModule' },
+  { path: 'inclusion', loadChildren: './inclusion/inclusion.module#InclusionPageModule' }
 ];
 @NgModule({
   imports: [

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController, NavController, AlertController } from '@ionic/angular';
+import { MenuController, NavController, ModalController, AlertController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/models/user';
 import { Profile } from 'src/app/models/profile';
@@ -9,6 +9,7 @@ import { LoadingService } from 'src/app/services/loading.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EnvService } from 'src/app/services/env.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { InclusionPage } from '../inclusion/inclusion.page';
 
 @Component({
   selector: 'app-option',
@@ -60,6 +61,7 @@ export class OptionPage implements OnInit {
     public activatedRoute : ActivatedRoute,
     private http: HttpClient,
     public alertController: AlertController,
+    public modalController: ModalController,
   ) {
   	this.menu.enable(true);	
   }
@@ -90,11 +92,6 @@ export class OptionPage implements OnInit {
     });
 
     this.activatedRoute.queryParams.subscribe((res)=>{
-        // this.heroes = JSON.parse(res.service).heroes;
-        // this.options = JSON.parse(res.service).options;
-        // this.title = JSON.parse(res.service).name;
-        // this.services = JSON.parse(res.services);
-        // this.backTitle = res.backTitle;
 
         this.service_id = res.service_id;
         this.category_id = res.category_id;
@@ -114,61 +111,88 @@ export class OptionPage implements OnInit {
 
   }
 
-  async tapOption(option) {
+  tapOption(option) {
     this.loading.present();
-    // console.log(option.form.length);
     this.heroOption.option_id = option.id;
     this.heroOption.hero_id = this.hero_id;
-
     if(option.form !== null) {
-
-      if(option.enable_quote == 'Yes') {
-
-        const alert = await this.alertController.create({
-          header: 'Save '+option.name+' Service?',
-          message: 'For the meantime, this service will be inactive. Admin will notify you once this service has been activated. Continue if you want to save this service.',
-          buttons: [
-            {
-              text: 'Dismiss',
-              role: 'cancel',
-              cssClass: 'secondary',
-              handler: (blah) => {
-                // console.log('Confirm Cancel: blah');
-              }
-            }, {
-              text: 'Continue',
-              handler: () => {
-                
-                  this.http.post(this.env.HERO_API + 'hero_options/save',this.heroOption)
-                  .subscribe(data => { 
-                    this.heroOption.pay_per = '';
-                  },error => { 
-                    console.log(error);
-                    this.alertService.presentToast("Server not responding!"); 
-                  },() => { this.navCtrl.navigateRoot('/tabs/home'); });
-                
-              }
-            }
-          ]
-        });
-
-        await alert.present();
-
+      if(option.form.inclusions !== null) {
+        this.showInclusion(option);
       } else {
-        this.router.navigate(['/tabs/form'],{
-          queryParams: {
-              service_id : this.service_id,
-              category_id : this.category_id,
-              hero_id : this.hero_id,
-              option : JSON.stringify(option)
-          },
-        });
-      }
-        
+        if(option.enable_quote == 'Yes') {
+          this.alertSave(option);
+        } else {
+          this.redirectToAmount(option);
+        }
+      }  
     } else {
       this.alertService.presentToast("No Form Available");
     }  
     this.loading.dismiss(); 
+  }
+
+  async alertSave(option) {
+    const alert = await this.alertController.create({
+      header: 'Save '+option.name+' Service?',
+      message: 'For the meantime, this service will be inactive. Admin will notify you once this service has been activated. Continue if you want to save this service.',
+      buttons: [
+        {
+          text: 'Dismiss',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            // console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Continue',
+          handler: () => {
+            
+              this.http.post(this.env.HERO_API + 'hero_options/save',this.heroOption)
+              .subscribe(data => { 
+                this.heroOption.pay_per = '';
+              },error => { 
+                console.log(error);
+                this.alertService.presentToast("Server not responding!"); 
+              },() => { this.navCtrl.navigateRoot('/tabs/home'); });
+            
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async showInclusion(option) {
+    const modal = await this.modalController.create({
+      component: InclusionPage,
+      componentProps: { 
+        form: option.form
+      }
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        if(option.enable_quote == 'Yes') {
+          this.alertSave(option);
+        } else {
+          this.redirectToAmount(option);
+        }
+      }
+    );
+
+    return await modal.present();
+  }
+
+  redirectToAmount(option) {
+    this.router.navigate(['/tabs/form'],{
+      queryParams: {
+          service_id : this.service_id,
+          category_id : this.category_id,
+          hero_id : this.hero_id,
+          option : JSON.stringify(option)
+      },
+    });
   }
 
   tapBack() {

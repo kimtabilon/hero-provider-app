@@ -29,6 +29,7 @@ import {TermPageModule} from './term/term.module';
 import {ChatPageModule} from './chat/chat.module';
 import {ReviewPageModule} from './review/review.module';
 import {NetworkPageModule} from './network/network.module';
+import {InclusionPageModule} from './inclusion/inclusion.module';
 
 import { IonicSelectableModule } from 'ionic-selectable';
 
@@ -48,6 +49,7 @@ import { IonicSelectableModule } from 'ionic-selectable';
     ChatPageModule,
     ReviewPageModule,
     NetworkPageModule,
+    InclusionPageModule,
   ],
   providers: [
     StatusBar,

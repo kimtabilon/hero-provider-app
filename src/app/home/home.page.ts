@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController, NavController, ActionSheetController, AlertController } from '@ionic/angular';
+import { MenuController, NavController, ActionSheetController, AlertController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { InitService } from '../services/init.service';
 import { AlertService } from 'src/app/services/alert.service';
@@ -8,6 +8,7 @@ import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EnvService } from 'src/app/services/env.service';
+import { InclusionPage } from '../inclusion/inclusion.page';
 
 @Component({
   selector: 'app-home',
@@ -51,6 +52,7 @@ export class HomePage implements OnInit {
     private env: EnvService,
     public actionSheetController: ActionSheetController,
     public alertController: AlertController,
+    public modalController: ModalController,
   ) { 
   	this.menu.enable(true);	
   }
@@ -113,39 +115,56 @@ export class HomePage implements OnInit {
   }
 
   async tapOption(option, i) {
-    // this.loading.present();
-    this.heroOption.id = option.pivot.id;
-    if(option.pivot.status == 'Active' && option.enable_quote == "No") {
-      this.router.navigate(['/tabs/form'],{
-        queryParams: {
-            option : JSON.stringify(option)
-        },
-      });
-    } else {
-      // this.loading.dismiss();
+    let btns:any = [];
 
-      const actionSheet = await this.actionSheetController.create({
-        header: option.name,
-        buttons: [{
-          text: 'Delete',
-          role: 'destructive',
-          icon: 'trash',
-          handler: () => {
-            this.confirmDelete(option, i);
-          }
-        }, {
-          text: 'Cancel',
-          icon: 'close',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        }]
-      });
-      await actionSheet.present();
+    if(option.pivot.status == 'Active' && option.enable_quote == "No") {
+       btns.push({
+        text: 'Open',
+        icon: 'eye',
+        handler: () => {
+          this.router.navigate(['/tabs/form'],{
+            queryParams: {
+                option : JSON.stringify(option)
+            },
+          });
+        }
+      }); 
     }
-    // this.loading.dismiss();
-      
+
+    if(option.form.inclusions !== null) {
+       btns.push({
+        text: 'View Inclusions',
+        icon: 'list-box',
+        handler: () => {
+          this.showInclusion(option);
+        }
+      }); 
+    }
+
+    btns.push({
+      text: 'Delete',
+      role: 'destructive',
+      icon: 'trash',
+      handler: () => {
+        this.confirmDelete(option, i);
+      }
+    });
+
+    btns.push({
+      text: 'Cancel',
+      icon: 'close',
+      role: 'cancel',
+      handler: () => {
+        console.log('Cancel clicked');
+      }
+    });  
+
+    let opt:any = {
+      header: option.name,
+      buttons: btns
+    };
+    const actionSheet = await this.actionSheetController.create(opt);
+      await actionSheet.present();
   }
 
   async confirmDelete(option, i) {
@@ -165,6 +184,7 @@ export class HomePage implements OnInit {
             text: 'Continue',
             handler: () => {
               this.myOptions.splice(i, 1);
+              this.heroOption.id = option.pivot.id;
               this.http.post(this.env.HERO_API + 'hero_options/delete',this.heroOption)
               .subscribe(data => { 
               },error => { 
@@ -179,6 +199,22 @@ export class HomePage implements OnInit {
       });
 
       await alert.present();
+  }
+
+  async showInclusion(option) {
+    const modal = await this.modalController.create({
+      component: InclusionPage,
+      componentProps: { 
+        form: option.form
+      }
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+      }
+    );
+
+    return await modal.present();
   }
 
   logout() {
