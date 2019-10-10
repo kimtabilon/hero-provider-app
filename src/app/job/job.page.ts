@@ -149,24 +149,22 @@ export class JobPage implements OnInit {
         icon: 'eye',
         handler: () => {
           this.loading.present();
-
+          let route:any = '';
           switch (job.status) {
             case "For Quotation":
-              this.router.navigate(['/tabs/quotation'],{
-                  queryParams: {
-                      job_id : job.id
-                  },
-                });
+              route = '/tabs/quotation';
               break; 
             
             default:
-              this.router.navigate(['/tabs/jobview'],{
-                  queryParams: {
-                      job_id : job.id
-                  },
-                });
+              route = '/tabs/jobview';
               break;
           }
+
+          this.router.navigate([route],{
+            queryParams: {
+                job_id : job.id
+            },
+          });
           this.loading.dismiss();
         }
       }, {
