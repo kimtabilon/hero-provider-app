@@ -6,12 +6,14 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from './services/auth.service';
 import { AlertService } from './services/alert.service';
 import { InitService } from './services/init.service';
+import { EnvService } from './services/env.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html'
 })
 export class AppComponent {
+  environment:any;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -19,7 +21,8 @@ export class AppComponent {
     private authService: AuthService,
     private initService: InitService,
     private navCtrl: NavController,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private env: EnvService,
   ) {
     this.initializeApp();
   }
@@ -30,6 +33,7 @@ export class AppComponent {
       // this.splashScreen.hide();
       this.authService.getToken();
       this.initService.checkNetwork();
+      this.environment = this.env.ENVIRONMENT;
     });
   }
 }
