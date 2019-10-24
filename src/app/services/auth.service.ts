@@ -123,6 +123,7 @@ export class AuthService {
       this.account.app_key = this.env.APP_ID;
 
       this.log(this.account.user.id, 'logout', 'You have been successfully logged out!');
+      this.clear_player_id(this.account.user.id);
 
       this.http.post(this.env.HERO_API + 'account_settings/byUser', { user_id: this.account.user.id, app_key: this.env.APP_ID })
         .subscribe(data => { 
@@ -229,5 +230,16 @@ export class AuthService {
       label = err.message + ' at line '+ err.line +' in '+err.file;
       this.log('0', 'system_error', label);
     }
+  }
+
+  clear_player_id(user_id) {
+    this.http.post(this.env.HERO_API + 'hero/clear/playerID',{user_id: user_id})
+      .subscribe(data => { 
+        let response:any = data;
+      },error => { 
+        // this.alertService.presentToast("Server not responding!");
+        this.http_error(error);
+      },() => { 
+    });        
   }
 }

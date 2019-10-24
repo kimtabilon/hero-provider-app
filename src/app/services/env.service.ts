@@ -9,6 +9,9 @@ export class EnvService {
   DEFAULT_IMG = '../../assets/img/blank-profile.png';  
   
   APP_ID = 'heroPROasdfr45fd';
+  ONESIGNAL_APP_ID = 'a367acdc-a0a1-41cf-a58c-ada4a06ed671';
+  FCM_SENDER_ID = '240609983489';
+
 
   /** LIVE ENVIRONMENT */
   // ENVIRONMENT = 'live';

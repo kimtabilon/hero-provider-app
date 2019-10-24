@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 
-import { Platform, NavController } from '@ionic/angular';
+import { Platform, NavController, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from './services/auth.service';
-import { AlertService } from './services/alert.service';
 import { InitService } from './services/init.service';
 import { EnvService } from './services/env.service';
 
@@ -20,8 +19,6 @@ export class AppComponent {
     private statusBar: StatusBar,
     private authService: AuthService,
     private initService: InitService,
-    private navCtrl: NavController,
-    private alertService: AlertService,
     private env: EnvService,
   ) {
     this.initializeApp();
@@ -34,6 +31,8 @@ export class AppComponent {
       this.authService.getToken();
       this.initService.checkNetwork();
       this.environment = this.env.ENVIRONMENT;
+
     });
   }
+
 }

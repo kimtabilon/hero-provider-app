@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController, NavController, ActionSheetController, AlertController, ModalController } from '@ionic/angular';
+import { Platform, MenuController, NavController, ActionSheetController, AlertController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { InitService } from '../services/init.service';
 import { AlertService } from 'src/app/services/alert.service';
@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EnvService } from 'src/app/services/env.service';
 import { InclusionPage } from '../inclusion/inclusion.page';
+
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 @Component({
   selector: 'app-home',
@@ -40,6 +42,7 @@ export class HomePage implements OnInit {
   title:any = 'Please wait...';
 
   constructor(
+    private platform: Platform,
     private http: HttpClient,
   	private menu: MenuController, 
   	private authService: AuthService,
@@ -53,6 +56,7 @@ export class HomePage implements OnInit {
     public actionSheetController: ActionSheetController,
     public alertController: AlertController,
     public modalController: ModalController,
+    private oneSignal: OneSignal,
   ) { 
   	this.menu.enable(true);	
   }
@@ -76,7 +80,7 @@ export class HomePage implements OnInit {
       this.user = val.data;
       this.profile = val.data.profile;  
 
-      this.checkUser(this.user);
+      
 
       if(this.profile.photo!==null) {
         this.photo = this.env.IMAGE_URL + 'uploads/' + this.profile.photo;
@@ -101,20 +105,34 @@ export class HomePage implements OnInit {
         this.app = val.data;
       }); 
       this.title = 'My Services';
+
+      if (this.platform.is('cordova')) {
+        this.setupPush();
+      }
+
+      this.checkUser(this.user);
     });
+
+     
 
   }
 
   checkUser(user) {
-    this.http.post(this.env.HERO_API + 'hero/login',{email: user.email, password:  user.password})
-    .subscribe(data => {
-        let response:any = data;
-        this.storage.set('hero', response);
-        this.user = response.data;
-    },error => { 
-      this.logout();
-      console.log(error); 
+    this.oneSignal.getIds().then((id) => {
+      // console.log(id);
+      // this.alertService.presentToast(JSON.stringify(id.userId)); 
+      this.http.post(this.env.HERO_API + 'hero/login',{email: user.email, password:  user.password, player_id: id.userId})
+      .subscribe(data => {
+          let response:any = data;
+          this.storage.set('hero', response);
+          this.user = response.data;
+          console.log(this.user);
+      },error => { 
+        this.logout();
+        console.log(error); 
+      });
     });
+    
   }
 
   async tapOption(option, i) {
@@ -218,6 +236,75 @@ export class HomePage implements OnInit {
     );
 
     return await modal.present();
+  }
+
+  setupPush() {
+    // I recommend to put these into your environment.ts
+    this.oneSignal.startInit(this.env.ONESIGNAL_APP_ID, this.env.FCM_SENDER_ID);
+ 
+    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
+ 
+    // Notifcation was received in general
+    this.oneSignal.handleNotificationReceived().subscribe(data => {
+      
+      let msg = data.payload.body;
+      let title = data.payload.title;
+      let response = data.payload.additionalData;
+      // this.alertService.presentToast(JSON.stringify(response)); 
+      switch (response.route) {
+        case "jobview":
+          this.showAlert(title, msg, 'Open Job', '/tabs/jobview', {job_id : response.id});
+          break;
+        
+        default:
+          this.showAlert(title, msg, 'Goto Inbox', '/tabs/inbox', {});
+          break;
+      }
+      
+    });
+ 
+    // Notification was really clicked/opened
+    this.oneSignal.handleNotificationOpened().subscribe(data => {
+      // Just a note that the data is a different place here!
+      let response = data.notification.payload.additionalData;
+      // this.alertService.presentToast(JSON.stringify(response)); 
+
+      switch (response.route) {
+        case "jobview":
+          this.router.navigate(['/tabs/jobview'],{
+            queryParams: { job_id : response.id },
+          });
+          break;
+        
+        default:
+          this.router.navigate(['/tabs/inbox'],{
+            queryParams: {},
+          });
+          break;
+      }
+
+      // this.showAlert('Notification opened', 'You already read this before', additionalData.task);
+    });
+ 
+    this.oneSignal.endInit();
+  }
+ 
+  async showAlert(title, msg, task, route, params) {
+    const alert = await this.alertController.create({
+      header: title,
+      subHeader: msg,
+      buttons: [
+        {
+          text: `${task}`,
+          handler: () => {
+            this.router.navigate([route],{
+              queryParams: params,
+            });
+          }
+        }
+      ]
+    })
+    alert.present();
   }
 
   logout() {
