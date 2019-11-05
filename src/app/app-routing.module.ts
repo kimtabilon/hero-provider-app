@@ -22,7 +22,8 @@ const routes: Routes = [
   { path: 'schedule', loadChildren: './schedule/schedule.module#SchedulePageModule' },
   { path: 'term', loadChildren: './term/term.module#TermPageModule' },
   { path: 'resendemail', loadChildren: './resendemail/resendemail.module#ResendemailPageModule' },
-  { path: 'inclusion', loadChildren: './inclusion/inclusion.module#InclusionPageModule' }
+  { path: 'inclusion', loadChildren: './inclusion/inclusion.module#InclusionPageModule' },
+  { path: 'privacy', loadChildren: './privacy/privacy.module#PrivacyPageModule' }
 ];
 @NgModule({
   imports: [

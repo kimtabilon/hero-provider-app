@@ -28,6 +28,7 @@ import { EmailComposer } from '@ionic-native/email-composer/ngx';
 
 import {SchedulePageModule} from './schedule/schedule.module';
 import {TermPageModule} from './term/term.module';
+import {PrivacyPageModule} from './privacy/privacy.module';
 import {ChatPageModule} from './chat/chat.module';
 import {ReviewPageModule} from './review/review.module';
 import {NetworkPageModule} from './network/network.module';
@@ -49,6 +50,7 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
   	IonicStorageModule.forRoot(),
     SchedulePageModule,
     TermPageModule,
+    PrivacyPageModule,
     IonicSelectableModule,
     ChatPageModule,
     ReviewPageModule,
