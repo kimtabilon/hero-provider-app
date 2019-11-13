@@ -1,7 +1,7 @@
 
 <ion-tabs>
   <!-- <div class="circle"></div> -->
-
+  <div *ngIf="environment == 'test'" style="text-align: center; background: red; color: #fff; z-index: 100;">You are in a Test Environment</div>
   <ion-tab-bar slot="bottom">
     <ion-tab-button tab="profile">
       <ion-icon name="person"></ion-icon>
@@ -30,5 +30,6 @@
       <ion-label>Help</ion-label>
     </ion-tab-button>
   </ion-tab-bar>
-
+  
 </ion-tabs>
+

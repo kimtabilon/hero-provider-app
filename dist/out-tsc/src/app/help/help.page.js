@@ -1,17 +1,17 @@
-import * as tslib_1 from "tslib";
+import { __decorate, __metadata } from "tslib";
 import { Component } from '@angular/core';
 import { MenuController, NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertService } from 'src/app/services/alert.service';
 import { LoadingService } from 'src/app/services/loading.service';
-import { GetService } from 'src/app/services/get.service';
-import { JobService } from 'src/app/services/job.service';
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { EnvService } from 'src/app/services/env.service';
+import { CallNumber } from '@ionic-native/call-number/ngx';
+import { EmailComposer } from '@ionic-native/email-composer/ngx';
 var HelpPage = /** @class */ (function () {
-    function HelpPage(http, menu, authService, navCtrl, storage, alertService, loading, getService, jobService, router, env) {
+    function HelpPage(http, menu, authService, navCtrl, storage, alertService, loading, router, env, callNumber, emailComposer) {
         this.http = http;
         this.menu = menu;
         this.authService = authService;
@@ -19,10 +19,10 @@ var HelpPage = /** @class */ (function () {
         this.storage = storage;
         this.alertService = alertService;
         this.loading = loading;
-        this.getService = getService;
-        this.jobService = jobService;
         this.router = router;
         this.env = env;
+        this.callNumber = callNumber;
+        this.emailComposer = emailComposer;
         this.user = {
             email: '',
             password: '',
@@ -50,8 +50,6 @@ var HelpPage = /** @class */ (function () {
     HelpPage.prototype.ionViewWillEnter = function () {
         var _this = this;
         this.loading.present();
-        this.http.post(this.env.HERO_API + 'check/server', {}).subscribe(function (data) { }, function (error) { _this.alertService.presentToast("Server not found. Check your internet connection."); });
-        this.http.post(this.env.API_URL + 'check/server', {}).subscribe(function (data) { }, function (error) { _this.alertService.presentToast("Server not found. Check your internet connection."); });
         this.storage.get('hero').then(function (val) {
             _this.user = val.data;
             _this.profile = val.data.profile;
@@ -61,9 +59,37 @@ var HelpPage = /** @class */ (function () {
             else {
                 _this.photo = _this.env.DEFAULT_IMG;
             }
-            _this.authService.validateApp(_this.user.email, _this.user.password);
             _this.loading.dismiss();
         });
+    };
+    HelpPage.prototype.tapCall = function () {
+        this.callNumber.callNumber("09979060885", true)
+            .then(function (res) { return console.log('Launched dialer!', res); })
+            .catch(function (err) { return console.log('Error launching dialer', err); });
+    };
+    /*  help@heroapp.ph*/
+    HelpPage.prototype.sendEmail = function () {
+        this.emailComposer.isAvailable().then(function (available) {
+            if (available) {
+                //Now we know we can send
+            }
+        });
+        var email = {
+            to: 'help@heroapp.ph',
+            cc: 'heroapp.ph@gmail.com',
+            bcc: ['john@doe.com', 'jane@doe.com'],
+            attachments: [
+            // 'file://img/logo.png',
+            // 'res://icon.png',
+            // 'base64:icon.png//iVBORw0KGgoAAAANSUhEUg...',
+            // 'file://README.pdf'
+            ],
+            subject: 'HERO CLIENT HELP',
+            body: 'How are you? Nice greetings from Hero Client',
+            isHtml: true
+        };
+        // Send a text message using default options
+        this.emailComposer.open(email);
     };
     HelpPage.prototype.logout = function () {
         this.loading.present();
@@ -72,23 +98,23 @@ var HelpPage = /** @class */ (function () {
         this.navCtrl.navigateRoot('/login');
         this.loading.dismiss();
     };
-    HelpPage = tslib_1.__decorate([
+    HelpPage = __decorate([
         Component({
             selector: 'app-help',
             templateUrl: './help.page.html',
             styleUrls: ['./help.page.scss'],
         }),
-        tslib_1.__metadata("design:paramtypes", [HttpClient,
+        __metadata("design:paramtypes", [HttpClient,
             MenuController,
             AuthService,
             NavController,
             Storage,
             AlertService,
             LoadingService,
-            GetService,
-            JobService,
             Router,
-            EnvService])
+            EnvService,
+            CallNumber,
+            EmailComposer])
     ], HelpPage);
     return HelpPage;
 }());

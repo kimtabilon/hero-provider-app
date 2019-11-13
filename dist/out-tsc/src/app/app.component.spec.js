@@ -1,5 +1,4 @@
-var _this = this;
-import * as tslib_1 from "tslib";
+import { __awaiter, __generator } from "tslib";
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 import { Platform } from '@ionic/angular';
@@ -28,8 +27,8 @@ describe('AppComponent', function () {
         var app = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();
     });
-    it('should initialize the app', function () { return tslib_1.__awaiter(_this, void 0, void 0, function () {
-        return tslib_1.__generator(this, function (_a) {
+    it('should initialize the app', function () { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     TestBed.createComponent(AppComponent);

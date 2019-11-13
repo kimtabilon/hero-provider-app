@@ -1,0 +1,29 @@
+.label {
+	font-size: 9pt;
+	color: #333;
+	text-align: center;
+}
+.amount, ion-note {
+	font-size: 13pt;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+}
+
+ion-content {
+  --background: none;  
+}
+
+ion-list {
+  padding: 10px !important;
+  background: none !important;
+  min-height: 0px;
+  width:100%;
+} 
+
+ion-item {
+  --background: none !important;
+  --border-radius: 0px !important;
+  color: #333;
+  margin-bottom: 5px; 
+}

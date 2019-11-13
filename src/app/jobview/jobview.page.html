@@ -11,6 +11,7 @@
   <div class="body">
     <ion-row class="text-center">
       <ion-col>
+        <button class="vault-btn" (click)="openVault()"><ion-icon name="lock"></ion-icon> VAULT</button>
         <img src="../../assets/img/header-logo.png" class="logo">
         <button class="signout-btn" (click)="logout()">Signout</button>
       </ion-col>
@@ -82,7 +83,7 @@
       <div *ngIf="heroExist">
         <ion-row padding class="field-wrap">
           <span class="field-text">Payment</span>
-          <ion-label class="field-label"><ion-icon name="cash" class="field-icon"></ion-icon></ion-label>
+          <ion-label class="field-label piso-sign">₱</ion-label>
           <ion-input [readonly]="true" class="field" value="{{job.amount}}"></ion-input>
         </ion-row>
       </div>
@@ -112,7 +113,7 @@
     <button *ngIf="status == 'For Confirmation' || status == 'Pending'" class="btn btn-signup" (click)="tapDeny()" >CANCEL JOB</button>
 
     <button *ngIf="status == 'Waiting for Payment' || status == 'Paid'" class="btn btn-login" (click)="tapRecievedCash()" >Recieved Cash</button>
-    <button *ngIf="status == 'Completed'" class="btn btn-login" (click)="tapReview()" >Write a Review</button>
+    <button *ngIf="enableReview" class="btn btn-login" (click)="tapReview()" >Write a Review</button>
 
   </ion-list>
     

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController, NavController, AlertController, ActionSheetController } from '@ionic/angular';
+import { MenuController, NavController, AlertController, ActionSheetController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertService } from 'src/app/services/alert.service';
 import { LoadingService } from 'src/app/services/loading.service';
@@ -7,7 +7,7 @@ import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EnvService } from 'src/app/services/env.service';
-
+import { VaultPage } from '../vault/vault.page';
 @Component({
   selector: 'app-inbox',
   templateUrl: './inbox.page.html',
@@ -43,7 +43,8 @@ export class InboxPage implements OnInit {
     public router : Router,
     private env: EnvService,
     public alertCtrl: AlertController,
-    public actionSheetController: ActionSheetController
+    public actionSheetController: ActionSheetController,
+    public modalController: ModalController,
   ) { 
   	this.menu.enable(true);	
   }
@@ -149,6 +150,22 @@ export class InboxPage implements OnInit {
     const actionSheet = await this.actionSheetController.create({ buttons: btns });
     await actionSheet.present();
       
+  }
+
+  async openVault() {
+    const modal = await this.modalController.create({
+      component: VaultPage,
+      componentProps: { 
+        hero: this.user
+      }
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+      }
+    );
+
+    return await modal.present();
   }
 
   logout() {

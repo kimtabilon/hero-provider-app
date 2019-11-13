@@ -1,25 +1,25 @@
-import * as tslib_1 from "tslib";
+import { __decorate, __metadata } from "tslib";
 import { Component } from '@angular/core';
 import { MenuController, NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertService } from 'src/app/services/alert.service';
 import { LoadingService } from 'src/app/services/loading.service';
-import { GetService } from 'src/app/services/get.service';
 import { Storage } from '@ionic/storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EnvService } from 'src/app/services/env.service';
+import { HttpClient } from '@angular/common/http';
 var ServicePage = /** @class */ (function () {
-    function ServicePage(menu, authService, navCtrl, storage, alertService, loading, getService, router, env, activatedRoute) {
+    function ServicePage(menu, authService, navCtrl, storage, alertService, loading, router, env, activatedRoute, http) {
         this.menu = menu;
         this.authService = authService;
         this.navCtrl = navCtrl;
         this.storage = storage;
         this.alertService = alertService;
         this.loading = loading;
-        this.getService = getService;
         this.router = router;
         this.env = env;
         this.activatedRoute = activatedRoute;
+        this.http = http;
         this.user = {
             email: '',
             password: '',
@@ -33,7 +33,6 @@ var ServicePage = /** @class */ (function () {
             gender: '',
             photo: ''
         };
-        this.photo = '';
         this.services = [];
         this.title = 'Please wait...';
         this.menu.enable(true);
@@ -59,21 +58,39 @@ var ServicePage = /** @class */ (function () {
                 _this.photo = _this.env.DEFAULT_IMG;
             }
         });
-        this.authService.validateApp(this.user.email, this.user.password);
         this.activatedRoute.queryParams.subscribe(function (res) {
-            _this.services = JSON.parse(res.value).services;
-            _this.title = JSON.parse(res.value).name;
+            var category_id = res.category_id;
+            _this.http.post(_this.env.HERO_API + 'categories/byID', { app_key: _this.env.APP_ID, id: category_id })
+                .subscribe(function (data) {
+                var response = data;
+                if (response !== null) {
+                    var category = response.data;
+                    _this.services = category.services;
+                    _this.title = category.name;
+                    _this.category_id = category.id;
+                }
+            }, function (error) {
+                console.log(error);
+            });
         });
         this.loading.dismiss();
     };
     ServicePage.prototype.tapService = function (service) {
         // console.log(this.services);
         this.loading.present();
-        this.router.navigate(['/tabs/form'], {
-            queryParams: {
-                service: JSON.stringify(service)
-            },
-        });
+        // this.router.navigate(['/tabs/form'],{
+        //   queryParams: {
+        //       service : JSON.stringify(service)
+        //   },
+        // });
+        if (service.options.length) {
+            this.router.navigate(['/tabs/option'], {
+                queryParams: {
+                    service_id: service.id,
+                    category_id: this.category_id
+                },
+            });
+        }
         this.loading.dismiss();
     };
     ServicePage.prototype.tapBack = function () {
@@ -91,22 +108,22 @@ var ServicePage = /** @class */ (function () {
         this.navCtrl.navigateRoot('/login');
         this.loading.dismiss();
     };
-    ServicePage = tslib_1.__decorate([
+    ServicePage = __decorate([
         Component({
             selector: 'app-service',
             templateUrl: './service.page.html',
             styleUrls: ['./service.page.scss'],
         }),
-        tslib_1.__metadata("design:paramtypes", [MenuController,
+        __metadata("design:paramtypes", [MenuController,
             AuthService,
             NavController,
             Storage,
             AlertService,
             LoadingService,
-            GetService,
             Router,
             EnvService,
-            ActivatedRoute])
+            ActivatedRoute,
+            HttpClient])
     ], ServicePage);
     return ServicePage;
 }());

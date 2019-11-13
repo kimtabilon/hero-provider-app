@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate, __metadata } from "tslib";
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NavController } from '@ionic/angular';
@@ -43,11 +43,11 @@ var JobService = /** @class */ (function () {
             // this.navCtrl.navigateRoot('/tabs/service');
         });
     };
-    JobService = tslib_1.__decorate([
+    JobService = __decorate([
         Injectable({
             providedIn: 'root'
         }),
-        tslib_1.__metadata("design:paramtypes", [HttpClient,
+        __metadata("design:paramtypes", [HttpClient,
             Storage,
             EnvService,
             NavController,

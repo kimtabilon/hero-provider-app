@@ -1,0 +1,104 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>VAULT</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-row>
+		<ion-col class="label">Overall Total Earnings</ion-col>
+	</ion-row>
+	<ion-row>	
+		<ion-col class="amount">₱ {{vault.overall_total}}.00</ion-col>
+	</ion-row>
+	<ion-row>
+		<ion-segment scrollable (ionChange)="segmentChanged($event)" color="secondary">
+	    <ion-segment-button value="day" checked>
+	      <ion-label>DAY</ion-label>
+	    </ion-segment-button>
+	    
+	    <!-- <ion-segment-button value="week">
+	      <ion-label>WEEK</ion-label>
+	    </ion-segment-button> -->
+	    
+	    <ion-segment-button value="month">
+	      <ion-label>MONTH</ion-label>
+	    </ion-segment-button>
+	    <ion-segment-button value="year">
+	      <ion-label>YEAR</ion-label>
+	    </ion-segment-button>
+	  </ion-segment>
+	</ion-row>
+	<ion-row>
+		<ion-list>
+	    
+	    <ion-item *ngIf="viewReportBy == 'day'">
+			  <ion-label position="floating">Filter by Date</ion-label>
+			  <ion-datetime 
+			  	[(ngModel)]='filter_date' 
+			  	max="{{date_setup.current}}" 
+			  	min="{{date_setup.last_year}}" 
+			  	(ionChange)="changeFilterDate()"
+			  	display-format="MMM DD, YYYY" 
+			  	picker-format="MMM DD, YYYY"
+			  ></ion-datetime>
+			</ion-item>
+
+			<ion-item *ngIf="viewReportBy == 'week'">
+			  <ion-label position="floating">Filter by Week</ion-label>
+			  <ion-datetime 
+			  	[(ngModel)]='filter_week' 
+			  	max="{{date_setup.current}}" 
+			  	min="{{date_setup.last_year}}" 
+			  	(ionChange)="changeFilterWeek()"
+			  	display-format="MMMM YYYY" 
+			  	picker-format="MMMM YYYY"
+			  ></ion-datetime>
+			</ion-item>
+
+			<ion-item *ngIf="viewReportBy == 'month'">
+			  <ion-label position="floating">Filter by Month</ion-label>
+			  <ion-datetime 
+			  	[(ngModel)]='filter_month' 
+			  	max="{{date_setup.current}}" 
+			  	min="{{date_setup.last_year}}" 
+			  	(ionChange)="changeFilterMonth()"
+			  	display-format="MMMM YYYY" 
+			  	picker-format="MMMM YYYY"
+			  ></ion-datetime>
+			</ion-item>
+
+			<ion-item *ngIf="viewReportBy == 'year'">
+			  <ion-label position="floating">Filter by Year</ion-label>
+			  <ion-datetime 
+			  	[(ngModel)]='filter_year' 
+			  	max="{{date_setup.current}}" 
+			  	min="{{date_setup.last_year}}" 
+			  	(ionChange)="changeFilterYear()"
+			  	display-format="YYYY" 
+			  	picker-format="YYYY"
+			  ></ion-datetime>
+			</ion-item>
+
+	    <ion-item>
+	      <ion-label>Earnings</ion-label>
+	      <ion-note slot="end" color="primary">₱ {{vault.earnings}}.00</ion-note>
+	    </ion-item>
+
+	    <ion-item>
+	      <ion-label>Total Jobs</ion-label>
+	      <ion-note slot="end" color="secondary">{{vault.count}}</ion-note>
+	    </ion-item>
+
+	    <ion-item>
+	      <ion-label>Total Hours</ion-label>
+	      <ion-note slot="end" color="tertiary">{{vault.hours}}:00</ion-note>
+	    </ion-item>
+	  </ion-list>  
+	</ion-row>
+</ion-content>

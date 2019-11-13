@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate, __metadata } from "tslib";
 import { Component } from '@angular/core';
 import { MenuController, NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
@@ -83,13 +83,13 @@ var HeroPage = /** @class */ (function () {
         this.alertService.presentToast('Successfully logout');
         this.navCtrl.navigateRoot('/login');
     };
-    HeroPage = tslib_1.__decorate([
+    HeroPage = __decorate([
         Component({
             selector: 'app-hero',
             templateUrl: './hero.page.html',
             styleUrls: ['./hero.page.scss'],
         }),
-        tslib_1.__metadata("design:paramtypes", [MenuController,
+        __metadata("design:paramtypes", [MenuController,
             AuthService,
             NavController,
             Storage,

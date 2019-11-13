@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __awaiter, __decorate, __generator, __metadata } from "tslib";
 import { Injectable } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 var LoadingService = /** @class */ (function () {
@@ -7,15 +7,15 @@ var LoadingService = /** @class */ (function () {
         this.isLoading = false;
     }
     LoadingService.prototype.present = function () {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var _this = this;
-            return tslib_1.__generator(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         this.isLoading = true;
                         return [4 /*yield*/, this.loadingController.create({
                                 duration: 5000,
-                                spinner: 'dots',
+                                spinner: 'crescent',
                                 cssClass: 'custom-loader-class'
                             }).then(function (a) {
                                 a.present().then(function () {
@@ -32,8 +32,8 @@ var LoadingService = /** @class */ (function () {
         });
     };
     LoadingService.prototype.dismiss = function () {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            return tslib_1.__generator(this, function (_a) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         this.isLoading = false;
@@ -45,11 +45,11 @@ var LoadingService = /** @class */ (function () {
             });
         });
     };
-    LoadingService = tslib_1.__decorate([
+    LoadingService = __decorate([
         Injectable({
             providedIn: 'root'
         }),
-        tslib_1.__metadata("design:paramtypes", [LoadingController])
+        __metadata("design:paramtypes", [LoadingController])
     ], LoadingService);
     return LoadingService;
 }());

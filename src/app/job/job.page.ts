@@ -12,7 +12,8 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EnvService } from 'src/app/services/env.service';
 import { ChatPage } from '../chat/chat.page';
-
+import { DirectionPage } from '../direction/direction.page';
+import { VaultPage } from '../vault/vault.page';
 @Component({
   selector: 'app-job',
   templateUrl: './job.page.html',
@@ -174,6 +175,12 @@ export class JobPage implements OnInit {
           this.openChat(job);        }
       }, 
       {
+        text: 'Get Direction',
+        icon: 'pin',
+        handler: () => {
+          this.getDirection(job);        }
+      },
+      {
         text: 'Cancel',
         icon: 'close',
         role: 'cancel',
@@ -199,6 +206,52 @@ export class JobPage implements OnInit {
       .then((data) => {
         let response:any = data;
     });
+
+    return await modal.present();
+  }
+
+  async getDirection(job) {
+    // console.log(job);
+    let hero_address:any = '';
+    let address:any = this.user.profile.addresses[0];
+    let customer_info = JSON.parse(job.customer_info);
+
+    console.log(customer_info);
+
+    // if(address.street) { hero_address += address.street + ', '; }
+    if(address.barangay) { hero_address += address.barangay + ', '; }
+    if(address.city) { hero_address += address.city + ', '; }
+    if(address.province) { hero_address += address.province + ', '; }
+    if(address.country) { hero_address += address.country + ' '; }
+
+    const modal = await this.modalController.create({
+      component: DirectionPage,
+      componentProps: { 
+        customer_address: customer_info.address,
+        hero_address: hero_address
+      }
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        let response:any = data;
+    });
+
+    return await modal.present();
+  }
+
+  async openVault() {
+    const modal = await this.modalController.create({
+      component: VaultPage,
+      componentProps: { 
+        hero: this.user
+      }
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+      }
+    );
 
     return await modal.present();
   }

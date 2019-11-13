@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate } from "tslib";
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -14,7 +14,7 @@ var routes = [
 var OptionPageModule = /** @class */ (function () {
     function OptionPageModule() {
     }
-    OptionPageModule = tslib_1.__decorate([
+    OptionPageModule = __decorate([
         NgModule({
             imports: [
                 CommonModule,

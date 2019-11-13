@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate, __metadata } from "tslib";
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NavController } from '@ionic/angular';
@@ -41,11 +41,11 @@ var GetService = /** @class */ (function () {
         //       })
         //     );
     };
-    GetService = tslib_1.__decorate([
+    GetService = __decorate([
         Injectable({
             providedIn: 'root'
         }),
-        tslib_1.__metadata("design:paramtypes", [HttpClient,
+        __metadata("design:paramtypes", [HttpClient,
             Storage,
             EnvService,
             NavController,

@@ -23,7 +23,9 @@ const routes: Routes = [
   { path: 'term', loadChildren: './term/term.module#TermPageModule' },
   { path: 'resendemail', loadChildren: './resendemail/resendemail.module#ResendemailPageModule' },
   { path: 'inclusion', loadChildren: './inclusion/inclusion.module#InclusionPageModule' },
-  { path: 'privacy', loadChildren: './privacy/privacy.module#PrivacyPageModule' }
+  { path: 'privacy', loadChildren: './privacy/privacy.module#PrivacyPageModule' },
+  { path: 'direction', loadChildren: './direction/direction.module#DirectionPageModule' },
+  { path: 'vault', loadChildren: './vault/vault.module#VaultPageModule' }
 ];
 @NgModule({
   imports: [

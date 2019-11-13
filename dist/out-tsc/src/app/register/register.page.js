@@ -1,6 +1,6 @@
-import * as tslib_1 from "tslib";
+import { __awaiter, __decorate, __generator, __metadata } from "tslib";
 import { Component } from '@angular/core';
-import { ModalController, NavController } from '@ionic/angular';
+import { ModalController, NavController, AlertController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { AlertService } from 'src/app/services/alert.service';
@@ -12,8 +12,15 @@ import { PhoneValidator } from '../validators/phone.validator';
 import { PasswordValidator } from '../validators/password.validator';
 import { CountryPhone } from './country-phone.model';
 import { OrderPipe } from 'ngx-order-pipe';
+import { TermPage } from '../term/term.page';
+import { PrivacyPage } from '../privacy/privacy.page';
+var Port = /** @class */ (function () {
+    function Port() {
+    }
+    return Port;
+}());
 var RegisterPage = /** @class */ (function () {
-    function RegisterPage(http, modalController, authService, navCtrl, alertService, storage, loading, env, formBuilder, orderPipe) {
+    function RegisterPage(http, modalController, authService, navCtrl, alertService, storage, loading, env, formBuilder, orderPipe, alertCtrl) {
         this.http = http;
         this.modalController = modalController;
         this.authService = authService;
@@ -24,10 +31,12 @@ var RegisterPage = /** @class */ (function () {
         this.env = env;
         this.formBuilder = formBuilder;
         this.orderPipe = orderPipe;
+        this.alertCtrl = alertCtrl;
         this.provinces = [];
         this.cities = [];
         this.barangays = [];
         this.eightenyearsAgo = '';
+        this.signup_btn = 'SIGN UP';
         this.validation_messages = {
             // 'username': [
             //   { type: 'required', message: 'Username is required.' },
@@ -64,6 +73,9 @@ var RegisterPage = /** @class */ (function () {
             'street': [
                 { type: 'required', message: 'Street is required.' }
             ],
+            'barangay': [
+                { type: 'required', message: 'Barangay is required.' }
+            ],
             'city': [
                 { type: 'required', message: 'City is required.' }
             ],
@@ -98,13 +110,13 @@ var RegisterPage = /** @class */ (function () {
     RegisterPage.prototype.tapProvince = function (event) {
         var _this = this;
         // console.log(event.detail.value);
-        var province = event.detail.value;
+        var province = event.value;
         fetch('./assets/json/refcitymun.json').then(function (res) { return res.json(); })
             .then(function (json) {
             // console.log(json.RECORDS);
             var records = json.RECORDS;
             _this.cities = records.filter(function (item) { return item.provCode === province.provCode; });
-            _this.cities = _this.orderPipe.transform(_this.cities, 'provDesc');
+            _this.cities = _this.orderPipe.transform(_this.cities, 'citymunDesc');
             // console.log(this.cities);
         });
     };
@@ -112,19 +124,19 @@ var RegisterPage = /** @class */ (function () {
     RegisterPage.prototype.tapCity = function (event) {
         var _this = this;
         // console.log(event.detail.value);
-        var city = event.detail.value;
+        var city = event.value;
         fetch('./assets/json/refbrgy.json').then(function (res) { return res.json(); })
             .then(function (json) {
             // console.log(json.RECORDS);
             var records = json.RECORDS;
             _this.barangays = records.filter(function (item) { return item.citymunCode === city.citymunCode; });
-            _this.barangays = _this.orderPipe.transform(_this.barangays, 'provDesc');
-            console.log(_this.barangays);
+            _this.barangays = _this.orderPipe.transform(_this.barangays, 'brgyDesc');
+            // console.log(this.barangays);
         });
     };
     ;
     RegisterPage.prototype.tapBarangay = function (event) {
-        console.log(event.detail.value);
+        // console.log(event.detail.value);
     };
     ;
     RegisterPage.prototype.ngOnInit = function () {
@@ -184,6 +196,7 @@ var RegisterPage = /** @class */ (function () {
             gender: new FormControl('', Validators.required),
             country_phone: this.country_phone_group,
             street: new FormControl('', Validators.required),
+            barangay: new FormControl('', Validators.required),
             city: new FormControl('', Validators.required),
             province: new FormControl('', Validators.required),
             country: new FormControl('PHILIPPINES', Validators.required),
@@ -198,24 +211,116 @@ var RegisterPage = /** @class */ (function () {
                 Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
             ])),
             matching_passwords: this.matching_passwords_group,
-            terms: new FormControl(true, Validators.pattern('true'))
+        });
+    };
+    RegisterPage.prototype.notifyEmailExist = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var alert;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.alertCtrl.create({
+                            header: 'Email Issue',
+                            message: 'Email already used.',
+                            buttons: [
+                                {
+                                    text: 'Cancel',
+                                    handler: function () {
+                                        _this.navCtrl.navigateRoot('/login');
+                                    }
+                                },
+                                {
+                                    text: 'Try Again',
+                                    role: 'cancel',
+                                    cssClass: 'secondary',
+                                    handler: function (blah) {
+                                    }
+                                }
+                            ]
+                        })];
+                    case 1:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    RegisterPage.prototype.notifyRegistrationSuccess = function (email, password) {
+        return __awaiter(this, void 0, void 0, function () {
+            var alert;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.alertCtrl.create({
+                            header: 'Success',
+                            message: 'You are now registered! Check your e-mail for account activation. If you don\'t receive an e-mail from us, tap Resend.',
+                            buttons: [
+                                {
+                                    text: 'Resend',
+                                    cssClass: 'secondary',
+                                    handler: function () {
+                                        _this.notifyRegistrationSuccess(email, password);
+                                        _this.http.post(_this.env.API_URL + 'hero/mail/resendactivation', { password: password, email: email, app_key: _this.env.APP_ID })
+                                            .subscribe(function (data) {
+                                            var response = data;
+                                            _this.loading.dismiss();
+                                            _this.alertService.presentToast("Check your Email for your Activation Link");
+                                            _this.authService.log(response.data.id, 'resend_activation', 'Resend activation link');
+                                        }, function (error) {
+                                            console.log(error);
+                                            _this.authService.http_error(error);
+                                            _this.loading.dismiss();
+                                            _this.alertService.presentToast("Account not Found");
+                                        });
+                                    }
+                                },
+                                {
+                                    text: 'Done',
+                                    handler: function (blah) {
+                                        _this.navCtrl.navigateRoot('/login');
+                                    }
+                                }
+                            ]
+                        })];
+                    case 1:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
         });
     };
     RegisterPage.prototype.onSubmit = function (values) {
         var _this = this;
         this.loading.present();
+        // console.log(values);
+        this.signup_btn = 'Please wait...';
         if (this.validations_form.valid) {
-            // console.log(values);
-            this.authService.register(values.first_name, values.middle_name, values.last_name, values.street, values.city, values.province, values.country, values.zip, values.birthmonth, values.birthday, values.birthyear, values.gender, values.country_phone.phone, values.email, values.matching_passwords.password, values.matching_passwords.confirm_password).subscribe(function (data) {
-                _this.loading.dismiss();
-                _this.alertService.presentToast('You are now registered! Check your email to activate account.');
-                _this.navCtrl.navigateRoot('/login');
-                console.log(data);
+            this.http.post(this.env.API_URL + 'hero/mail/check', { email: values.email })
+                .subscribe(function (data) {
+                _this.authService.register(values.first_name, values.middle_name, values.last_name, values.street, values.barangay.brgyDesc, values.city.citymunDesc, values.province.provDesc, values.country, values.zip, values.birthmonth, values.birthday, values.birthyear, values.gender, values.country_phone.phone, values.email, values.matching_passwords.password, values.matching_passwords.confirm_password).subscribe(function (data) {
+                    var response = data;
+                    _this.authService.log(response.data.hero.id, 'registered', 'New account created');
+                    _this.loading.dismiss();
+                    _this.notifyRegistrationSuccess(values.email, values.matching_passwords.password);
+                }, function (error) {
+                    _this.signup_btn = 'Try Again';
+                    _this.loading.dismiss();
+                    _this.alertService.presentToast('Email already exist.');
+                    console.log(error);
+                    _this.authService.http_error(error);
+                }, function () {
+                });
             }, function (error) {
+                _this.notifyEmailExist();
                 _this.loading.dismiss();
-                _this.alertService.presentToast('Email already exist.');
-                console.log(error);
-            }, function () {
+                _this.signup_btn = 'CREATE ACCOUNT';
+                _this.authService.http_error(error);
             });
         }
         else {
@@ -240,8 +345,6 @@ var RegisterPage = /** @class */ (function () {
     };
     RegisterPage.prototype.ionViewWillEnter = function () {
         var _this = this;
-        this.http.post(this.env.HERO_API + 'check/server', {}).subscribe(function (data) { }, function (error) { _this.alertService.presentToast("Server not found. Check your internet connection."); });
-        this.http.post(this.env.API_URL + 'check/server', {}).subscribe(function (data) { }, function (error) { _this.alertService.presentToast("Server not found. Check your internet connection."); });
         var eightenyearsAgo = function (sp) {
             var today = new Date();
             var dd = today.getDate();
@@ -260,13 +363,59 @@ var RegisterPage = /** @class */ (function () {
             }
         });
     };
-    RegisterPage = tslib_1.__decorate([
+    RegisterPage.prototype.terms = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var modal;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.modalController.create({
+                            component: TermPage,
+                            componentProps: {
+                                user: {}
+                            }
+                        })];
+                    case 1:
+                        modal = _a.sent();
+                        modal.onDidDismiss()
+                            .then(function (data) {
+                            var response = data;
+                        });
+                        return [4 /*yield*/, modal.present()];
+                    case 2: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    RegisterPage.prototype.privacy = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var modal;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.modalController.create({
+                            component: PrivacyPage,
+                            componentProps: {
+                                user: {}
+                            }
+                        })];
+                    case 1:
+                        modal = _a.sent();
+                        modal.onDidDismiss()
+                            .then(function (data) {
+                            var response = data;
+                        });
+                        return [4 /*yield*/, modal.present()];
+                    case 2: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    RegisterPage = __decorate([
         Component({
             selector: 'app-register',
             templateUrl: './register.page.html',
             styleUrls: ['./register.page.scss'],
         }),
-        tslib_1.__metadata("design:paramtypes", [HttpClient,
+        __metadata("design:paramtypes", [HttpClient,
             ModalController,
             AuthService,
             NavController,
@@ -275,7 +424,8 @@ var RegisterPage = /** @class */ (function () {
             LoadingService,
             EnvService,
             FormBuilder,
-            OrderPipe])
+            OrderPipe,
+            AlertController])
     ], RegisterPage);
     return RegisterPage;
 }());

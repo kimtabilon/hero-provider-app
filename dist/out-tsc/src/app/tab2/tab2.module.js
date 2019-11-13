@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate } from "tslib";
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
@@ -8,7 +8,7 @@ import { Tab2Page } from './tab2.page';
 var Tab2PageModule = /** @class */ (function () {
     function Tab2PageModule() {
     }
-    Tab2PageModule = tslib_1.__decorate([
+    Tab2PageModule = __decorate([
         NgModule({
             imports: [
                 IonicModule,

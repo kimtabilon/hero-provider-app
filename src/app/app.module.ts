@@ -33,6 +33,8 @@ import {ChatPageModule} from './chat/chat.module';
 import {ReviewPageModule} from './review/review.module';
 import {NetworkPageModule} from './network/network.module';
 import {InclusionPageModule} from './inclusion/inclusion.module';
+import {DirectionPageModule} from './direction/direction.module';
+import {VaultPageModule} from './vault/vault.module';
 
 import { IonicSelectableModule } from 'ionic-selectable';
 
@@ -56,6 +58,8 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
     ReviewPageModule,
     NetworkPageModule,
     InclusionPageModule,
+    DirectionPageModule,
+    VaultPageModule,
     FormsModule,
     ReactiveFormsModule,
   ],

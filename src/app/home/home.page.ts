@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EnvService } from 'src/app/services/env.service';
 import { InclusionPage } from '../inclusion/inclusion.page';
+import { VaultPage } from '../vault/vault.page';
 
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 
@@ -227,6 +228,22 @@ export class HomePage implements OnInit {
       component: InclusionPage,
       componentProps: { 
         form: option.form
+      }
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+      }
+    );
+
+    return await modal.present();
+  }
+
+  async openVault() {
+    const modal = await this.modalController.create({
+      component: VaultPage,
+      componentProps: { 
+        hero: this.user
       }
     });
 

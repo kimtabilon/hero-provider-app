@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController, NavController, AlertController } from '@ionic/angular';
+import { MenuController, NavController, AlertController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/models/user';
 import { Profile } from 'src/app/models/profile';
@@ -9,7 +9,7 @@ import { Storage } from '@ionic/storage';
 import { LoadingService } from 'src/app/services/loading.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
+import { VaultPage } from '../vault/vault.page';
 @Component({
   selector: 'app-form',
   templateUrl: './form.page.html',
@@ -58,6 +58,8 @@ export class FormPage implements OnInit {
     private http: HttpClient,
     private env: EnvService,
     public alertController: AlertController,
+    public modalController: ModalController,
+
   ) {
   	this.menu.enable(true);	
   }
@@ -193,15 +195,22 @@ export class FormPage implements OnInit {
     });
 
     await alert.present();
+  }
 
-    // this.loading.present();
+  async openVault() {
+    const modal = await this.modalController.create({
+      component: VaultPage,
+      componentProps: { 
+        hero: this.user
+      }
+    });
 
-    // console.log(this.heroService);
+    modal.onDidDismiss()
+      .then((data) => {
+      }
+    );
 
-    /*Save Hero Service*/
-    
-
-    // this.loading.dismiss();
+    return await modal.present();
   }
 
   logout() {

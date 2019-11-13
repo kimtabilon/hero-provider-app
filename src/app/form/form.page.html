@@ -11,6 +11,7 @@
   <div class="body">
     <ion-row class="text-center">
       <ion-col>
+        <button class="vault-btn" (click)="openVault()"><ion-icon name="lock"></ion-icon> VAULT</button>
         <img src="../../assets/img/header-logo.png" class="logo">
         <button class="signout-btn" (click)="logout()">Signout</button>
       </ion-col>
@@ -32,7 +33,7 @@
     <ion-row></ion-row>
     <ion-row padding class="form-header"><ion-col class="text-center">Rate per Hour</ion-col></ion-row>
     <ion-row padding class="field-wrap">
-      <ion-label class="field-label"><ion-icon name="add" class="field-icon"></ion-icon></ion-label>
+      <ion-label class="field-label piso-sign">₱</ion-label>
       <ion-input  type="number" class="field" [(ngModel)]="heroOption.pay_per" placeholder="Input Rate"></ion-input>
       
     </ion-row>

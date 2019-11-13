@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __awaiter, __decorate, __generator, __metadata } from "tslib";
 import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 var AlertService = /** @class */ (function () {
@@ -6,15 +6,16 @@ var AlertService = /** @class */ (function () {
         this.toastController = toastController;
     }
     AlertService.prototype.presentToast = function (message) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var toast;
-            return tslib_1.__generator(this, function (_a) {
+            return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.toastController.create({
                             message: message,
-                            duration: 2000,
+                            duration: 4000,
                             position: 'top',
-                            color: 'dark'
+                            color: 'dark',
+                            showCloseButton: true
                         })];
                     case 1:
                         toast = _a.sent();
@@ -24,11 +25,11 @@ var AlertService = /** @class */ (function () {
             });
         });
     };
-    AlertService = tslib_1.__decorate([
+    AlertService = __decorate([
         Injectable({
             providedIn: 'root'
         }),
-        tslib_1.__metadata("design:paramtypes", [ToastController])
+        __metadata("design:paramtypes", [ToastController])
     ], AlertService);
     return AlertService;
 }());

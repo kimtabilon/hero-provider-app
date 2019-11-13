@@ -11,7 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChatPage } from '../chat/chat.page';
 import { ReviewPage } from '../review/review.page';
-
+import { VaultPage } from '../vault/vault.page';
 @Component({
   selector: 'app-jobview',
   templateUrl: './jobview.page.html',
@@ -46,6 +46,7 @@ export class JobviewPage implements OnInit {
 
   enableCancel:any = false;
   enableNoshow:any = false;
+  enableReview:any = false;
 
   constructor(
   	private menu: MenuController, 
@@ -162,6 +163,12 @@ export class JobviewPage implements OnInit {
               this.enableCancel = true;
             }
 
+            if(this.job.status == 'Completed' ||
+               this.job.status == 'Paid'
+            ) { 
+              this.checkExistingReview();
+            }
+
             // if(this.job.status == 'No Show : Client' || 
             //    this.job.status == 'No Show : Hero' || 
             //    this.job.status == 'Cancelled' || 
@@ -178,7 +185,7 @@ export class JobviewPage implements OnInit {
         },error => { 
           console.log(error);
           this.title = 'Back'; 
-          this.alertService.presentToast("Client removed this job.");
+          // this.alertService.presentToast("Client removed this job.");
 
           this.http.post(this.env.HERO_API + 'inboxes/hide',{id: this.noti_id})
           .subscribe(data => {
@@ -196,6 +203,21 @@ export class JobviewPage implements OnInit {
         }); 
     });
 
+  }
+
+  checkExistingReview() {
+    this.http.post(this.env.HERO_API + 'reviews/checkExisting',
+       {
+         job_id: this.job.id,
+         hero_id: this.job.hero_id,
+         from: 'client',
+       }
+    )
+    .subscribe(data => {
+      this.enableReview = false;
+    },error => { 
+      this.enableReview = true;
+    },() => { });
   }
 
   tapBack() {
@@ -274,7 +296,7 @@ export class JobviewPage implements OnInit {
               .subscribe(data => {
                 this.loading.dismiss();
               },error => { 
-                this.alertService.presentToast("Client removed this job.");
+                // this.alertService.presentToast("Client removed this job.");
                 
                 // this.http.post(this.env.HERO_API + 'inboxes/hide',{id: this.noti_id})
                 // .subscribe(data => {
@@ -290,6 +312,7 @@ export class JobviewPage implements OnInit {
 
                 this.loading.dismiss();
                 console.log(error);
+                this.navCtrl.navigateRoot('/tabs/job');
               },
               () => { this.navCtrl.navigateRoot('/tabs/job'); }
             );  
@@ -428,6 +451,22 @@ export class JobviewPage implements OnInit {
       .then((data) => {
         let response:any = data;
     });
+
+    return await modal.present();
+  }
+
+  async openVault() {
+    const modal = await this.modalController.create({
+      component: VaultPage,
+      componentProps: { 
+        hero: this.user
+      }
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+      }
+    );
 
     return await modal.present();
   }

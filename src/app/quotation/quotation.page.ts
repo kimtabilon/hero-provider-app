@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController, NavController } from '@ionic/angular';
+import { MenuController, NavController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/models/user';
 import { Profile } from 'src/app/models/profile';
@@ -9,7 +9,7 @@ import { Storage } from '@ionic/storage';
 import { LoadingService } from 'src/app/services/loading.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
+import { VaultPage } from '../vault/vault.page';
 @Component({
   selector: 'app-quotation',
   templateUrl: './quotation.page.html',
@@ -54,7 +54,8 @@ export class QuotationPage implements OnInit {
     public activatedRoute : ActivatedRoute,
     public loading: LoadingService,
     private http: HttpClient,
-    private env: EnvService
+    private env: EnvService,
+    public modalController: ModalController,
   ) {
   	this.menu.enable(true);	
   }
@@ -171,7 +172,21 @@ export class QuotationPage implements OnInit {
       
   }
 
+  async openVault() {
+    const modal = await this.modalController.create({
+      component: VaultPage,
+      componentProps: { 
+        hero: this.user
+      }
+    });
 
+    modal.onDidDismiss()
+      .then((data) => {
+      }
+    );
+
+    return await modal.present();
+  }
 
   logout() {
     this.loading.present();

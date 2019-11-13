@@ -1,6 +1,6 @@
-import * as tslib_1 from "tslib";
+import { __awaiter, __decorate, __generator, __metadata } from "tslib";
 import { Component } from '@angular/core';
-import { MenuController, NavController } from '@ionic/angular';
+import { MenuController, NavController, ActionSheetController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertService } from 'src/app/services/alert.service';
 import { LoadingService } from 'src/app/services/loading.service';
@@ -10,8 +10,10 @@ import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { EnvService } from 'src/app/services/env.service';
+import { ChatPage } from '../chat/chat.page';
+import { DirectionPage } from '../direction/direction.page';
 var JobPage = /** @class */ (function () {
-    function JobPage(http, menu, authService, navCtrl, storage, alertService, loading, getService, jobService, router, env) {
+    function JobPage(http, menu, authService, navCtrl, storage, alertService, loading, getService, jobService, router, env, actionSheetController, modalController) {
         this.http = http;
         this.menu = menu;
         this.authService = authService;
@@ -23,6 +25,8 @@ var JobPage = /** @class */ (function () {
         this.jobService = jobService;
         this.router = router;
         this.env = env;
+        this.actionSheetController = actionSheetController;
+        this.modalController = modalController;
         this.user = {
             email: '',
             password: '',
@@ -65,7 +69,6 @@ var JobPage = /** @class */ (function () {
             else {
                 _this.photo = _this.env.DEFAULT_IMG;
             }
-            _this.authService.validateApp(_this.user.email, _this.user.password);
             /*Get My Jobs*/
             _this.http.post(_this.env.HERO_API + 'hero/jobs', { id: _this.user.id })
                 .subscribe(function (data) {
@@ -86,26 +89,6 @@ var JobPage = /** @class */ (function () {
                 _this.app = val.data;
             });
         });
-    };
-    JobPage.prototype.tapJob = function (job) {
-        this.loading.present();
-        switch (job.status) {
-            case "For Quotation":
-                this.router.navigate(['/tabs/quotation'], {
-                    queryParams: {
-                        job_id: job.id
-                    },
-                });
-                break;
-            default:
-                this.router.navigate(['/tabs/jobview'], {
-                    queryParams: {
-                        job_id: job.id
-                    },
-                });
-                break;
-        }
-        this.loading.dismiss();
     };
     JobPage.prototype.tapCompleted = function () {
         var _this = this;
@@ -145,6 +128,135 @@ var JobPage = /** @class */ (function () {
         }, function (error) { _this.myjobstitle = 'My Jobs'; });
         this.loading.dismiss();
     };
+    JobPage.prototype.presentActionSheet = function (job) {
+        return __awaiter(this, void 0, void 0, function () {
+            var actions, actionSheet;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        actions = {
+                            buttons: [{
+                                    text: 'View Details',
+                                    icon: 'eye',
+                                    handler: function () {
+                                        _this.loading.present();
+                                        var route = '';
+                                        switch (job.status) {
+                                            case "For Quotation":
+                                                route = '/tabs/quotation';
+                                                break;
+                                            default:
+                                                route = '/tabs/jobview';
+                                                break;
+                                        }
+                                        _this.router.navigate([route], {
+                                            queryParams: {
+                                                job_id: job.id
+                                            },
+                                        });
+                                        _this.loading.dismiss();
+                                    }
+                                }, {
+                                    text: 'Chat with Client',
+                                    icon: 'chatbubbles',
+                                    handler: function () {
+                                        _this.openChat(job);
+                                    }
+                                },
+                                {
+                                    text: 'Get Direction',
+                                    icon: 'pin',
+                                    handler: function () {
+                                        _this.getDirection(job);
+                                    }
+                                },
+                                {
+                                    text: 'Cancel',
+                                    icon: 'close',
+                                    role: 'cancel',
+                                    handler: function () {
+                                        console.log('Cancel clicked');
+                                    }
+                                }]
+                        };
+                        return [4 /*yield*/, this.actionSheetController.create(actions)];
+                    case 1:
+                        actionSheet = _a.sent();
+                        return [4 /*yield*/, actionSheet.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    JobPage.prototype.openChat = function (job) {
+        return __awaiter(this, void 0, void 0, function () {
+            var modal;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.modalController.create({
+                            component: ChatPage,
+                            componentProps: {
+                                job: job,
+                                customer: JSON.parse(job.customer_info)
+                            }
+                        })];
+                    case 1:
+                        modal = _a.sent();
+                        modal.onDidDismiss()
+                            .then(function (data) {
+                            var response = data;
+                        });
+                        return [4 /*yield*/, modal.present()];
+                    case 2: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    JobPage.prototype.getDirection = function (job) {
+        return __awaiter(this, void 0, void 0, function () {
+            var hero_address, address, customer_info, modal;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        hero_address = '';
+                        address = this.user.profile.addresses[0];
+                        customer_info = JSON.parse(job.customer_info);
+                        console.log(customer_info);
+                        // if(address.street) { hero_address += address.street + ', '; }
+                        if (address.barangay) {
+                            hero_address += address.barangay + ', ';
+                        }
+                        if (address.city) {
+                            hero_address += address.city + ', ';
+                        }
+                        if (address.province) {
+                            hero_address += address.province + ', ';
+                        }
+                        if (address.country) {
+                            hero_address += address.country + ' ';
+                        }
+                        return [4 /*yield*/, this.modalController.create({
+                                component: DirectionPage,
+                                componentProps: {
+                                    customer_address: customer_info.address,
+                                    hero_address: hero_address
+                                }
+                            })];
+                    case 1:
+                        modal = _a.sent();
+                        modal.onDidDismiss()
+                            .then(function (data) {
+                            var response = data;
+                        });
+                        return [4 /*yield*/, modal.present()];
+                    case 2: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
     JobPage.prototype.logout = function () {
         this.loading.present();
         this.authService.logout();
@@ -152,13 +264,13 @@ var JobPage = /** @class */ (function () {
         this.navCtrl.navigateRoot('/login');
         this.loading.dismiss();
     };
-    JobPage = tslib_1.__decorate([
+    JobPage = __decorate([
         Component({
             selector: 'app-job',
             templateUrl: './job.page.html',
             styleUrls: ['./job.page.scss'],
         }),
-        tslib_1.__metadata("design:paramtypes", [HttpClient,
+        __metadata("design:paramtypes", [HttpClient,
             MenuController,
             AuthService,
             NavController,
@@ -168,7 +280,9 @@ var JobPage = /** @class */ (function () {
             GetService,
             JobService,
             Router,
-            EnvService])
+            EnvService,
+            ActionSheetController,
+            ModalController])
     ], JobPage);
     return JobPage;
 }());

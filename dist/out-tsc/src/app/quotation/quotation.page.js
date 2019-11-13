@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate, __metadata } from "tslib";
 import { Component } from '@angular/core';
 import { MenuController, NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
@@ -102,6 +102,7 @@ var QuotationPage = /** @class */ (function () {
     };
     QuotationPage.prototype.tapBack = function () {
         this.loading.present();
+        this.quote.amount = 0;
         this.router.navigate(['/tabs/inbox'], {
             queryParams: {},
         });
@@ -114,16 +115,20 @@ var QuotationPage = /** @class */ (function () {
         if (this.quote.amount > 0) {
             this.http.post(this.env.HERO_API + 'quotations/store', this.quote)
                 .subscribe(function (data) {
+                _this.authService.log(_this.user.id, 'quotation_submitted', 'You quotation has been sent to the client.');
+                _this.alertService.presentToast("You quotation has been sent to the client.");
             }, function (error) {
                 _this.loading.dismiss();
                 // this.alertService.presentToast("Server not responding!"); 
                 _this.alertService.presentToast("Client removed this job.");
                 _this.tapDeny();
+                _this.authService.http_error(error);
                 console.log(error);
             }, function () {
                 _this.loading.dismiss();
                 _this.navCtrl.navigateRoot('/tabs/inbox');
             });
+            this.quote.amount = 0;
         }
         else {
             this.loading.dismiss();
@@ -133,6 +138,7 @@ var QuotationPage = /** @class */ (function () {
     QuotationPage.prototype.tapDeny = function () {
         var _this = this;
         this.loading.present();
+        this.quote.amount = 0;
         this.http.post(this.env.HERO_API + 'inboxes/hide', { id: this.quote.noti_id })
             .subscribe(function (data) {
             var response = data;
@@ -152,13 +158,13 @@ var QuotationPage = /** @class */ (function () {
         this.navCtrl.navigateRoot('/login');
         this.loading.dismiss();
     };
-    QuotationPage = tslib_1.__decorate([
+    QuotationPage = __decorate([
         Component({
             selector: 'app-quotation',
             templateUrl: './quotation.page.html',
             styleUrls: ['./quotation.page.scss'],
         }),
-        tslib_1.__metadata("design:paramtypes", [MenuController,
+        __metadata("design:paramtypes", [MenuController,
             AuthService,
             NavController,
             Storage,

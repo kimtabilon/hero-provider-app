@@ -1,22 +1,20 @@
-import * as tslib_1 from "tslib";
+import { __decorate, __metadata } from "tslib";
 import { Component } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { AlertService } from 'src/app/services/alert.service';
-import { GetService } from 'src/app/services/get.service';
 import { Storage } from '@ionic/storage';
 import { HttpClient } from '@angular/common/http';
 import { EnvService } from 'src/app/services/env.service';
 var LoginresetPage = /** @class */ (function () {
-    function LoginresetPage(http, modalController, authService, navCtrl, alertService, storage, getService, loading, env) {
+    function LoginresetPage(http, modalController, authService, navCtrl, alertService, storage, loading, env) {
         this.http = http;
         this.modalController = modalController;
         this.authService = authService;
         this.navCtrl = navCtrl;
         this.alertService = alertService;
         this.storage = storage;
-        this.getService = getService;
         this.loading = loading;
         this.env = env;
     }
@@ -54,19 +52,18 @@ var LoginresetPage = /** @class */ (function () {
             }
         });
     };
-    LoginresetPage = tslib_1.__decorate([
+    LoginresetPage = __decorate([
         Component({
             selector: 'app-loginreset',
             templateUrl: './loginreset.page.html',
             styleUrls: ['./loginreset.page.scss'],
         }),
-        tslib_1.__metadata("design:paramtypes", [HttpClient,
+        __metadata("design:paramtypes", [HttpClient,
             ModalController,
             AuthService,
             NavController,
             AlertService,
             Storage,
-            GetService,
             LoadingService,
             EnvService])
     ], LoginresetPage);

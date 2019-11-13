@@ -1,15 +1,15 @@
-import * as tslib_1 from "tslib";
+import { __decorate, __metadata } from "tslib";
 import { Component } from '@angular/core';
 var Tab3Page = /** @class */ (function () {
     function Tab3Page() {
     }
-    Tab3Page = tslib_1.__decorate([
+    Tab3Page = __decorate([
         Component({
             selector: 'app-tab3',
             templateUrl: 'tab3.page.html',
             styleUrls: ['tab3.page.scss']
         }),
-        tslib_1.__metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [])
     ], Tab3Page);
     return Tab3Page;
 }());

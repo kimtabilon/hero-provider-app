@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController, NavController } from '@ionic/angular';
+import { MenuController, NavController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertService } from 'src/app/services/alert.service';
 import { LoadingService } from 'src/app/services/loading.service';
@@ -7,7 +7,7 @@ import { Storage } from '@ionic/storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EnvService } from 'src/app/services/env.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
+import { VaultPage } from '../vault/vault.page';
 @Component({
   selector: 'app-service',
   templateUrl: './service.page.html',
@@ -45,6 +45,7 @@ export class ServicePage implements OnInit {
     private env: EnvService,
     public activatedRoute : ActivatedRoute,
     private http: HttpClient,
+    public modalController: ModalController,
   ) {
   	this.menu.enable(true);	
   }
@@ -121,6 +122,22 @@ export class ServicePage implements OnInit {
       queryParams: {},
     });
     this.loading.dismiss();
+  }
+
+  async openVault() {
+    const modal = await this.modalController.create({
+      component: VaultPage,
+      componentProps: { 
+        hero: this.user
+      }
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+      }
+    );
+
+    return await modal.present();
   }
 
   logout() {

@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate, __metadata } from "tslib";
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
@@ -17,11 +17,11 @@ var AuthGuard = /** @class */ (function () {
         this.router.navigate(['/login']);
         return false;
     };
-    AuthGuard = tslib_1.__decorate([
+    AuthGuard = __decorate([
         Injectable({
             providedIn: 'root'
         }),
-        tslib_1.__metadata("design:paramtypes", [Router,
+        __metadata("design:paramtypes", [Router,
             AuthService])
     ], AuthGuard);
     return AuthGuard;

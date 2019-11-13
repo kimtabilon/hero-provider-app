@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate } from "tslib";
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule } from '@angular/router';
 var routes = [
@@ -18,12 +18,19 @@ var routes = [
     { path: 'inbox', loadChildren: './inbox/inbox.module#InboxPageModule' },
     { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' },
     { path: 'help', loadChildren: './help/help.module#HelpPageModule' },
-    { path: 'loginreset', loadChildren: './loginreset/loginreset.module#LoginresetPageModule' }
+    { path: 'loginreset', loadChildren: './loginreset/loginreset.module#LoginresetPageModule' },
+    { path: 'schedule', loadChildren: './schedule/schedule.module#SchedulePageModule' },
+    { path: 'term', loadChildren: './term/term.module#TermPageModule' },
+    { path: 'resendemail', loadChildren: './resendemail/resendemail.module#ResendemailPageModule' },
+    { path: 'inclusion', loadChildren: './inclusion/inclusion.module#InclusionPageModule' },
+    { path: 'privacy', loadChildren: './privacy/privacy.module#PrivacyPageModule' },
+    { path: 'direction', loadChildren: './direction/direction.module#DirectionPageModule' },
+    { path: 'vault', loadChildren: './vault/vault.module#VaultPageModule' }
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
     }
-    AppRoutingModule = tslib_1.__decorate([
+    AppRoutingModule = __decorate([
         NgModule({
             imports: [
                 RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })

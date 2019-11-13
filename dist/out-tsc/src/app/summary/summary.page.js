@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate, __metadata } from "tslib";
 import { Component } from '@angular/core';
 import { MenuController, NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
@@ -41,13 +41,13 @@ var SummaryPage = /** @class */ (function () {
         this.alertService.presentToast('Successfully logout');
         this.navCtrl.navigateRoot('/login');
     };
-    SummaryPage = tslib_1.__decorate([
+    SummaryPage = __decorate([
         Component({
             selector: 'app-summary',
             templateUrl: './summary.page.html',
             styleUrls: ['./summary.page.scss'],
         }),
-        tslib_1.__metadata("design:paramtypes", [MenuController,
+        __metadata("design:paramtypes", [MenuController,
             AuthService,
             NavController,
             Storage,

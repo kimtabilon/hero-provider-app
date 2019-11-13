@@ -10,7 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { EnvService } from 'src/app/services/env.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { InclusionPage } from '../inclusion/inclusion.page';
-
+import { VaultPage } from '../vault/vault.page';
 @Component({
   selector: 'app-option',
   templateUrl: './option.page.html',
@@ -203,6 +203,22 @@ export class OptionPage implements OnInit {
       },
     });  
     this.loading.dismiss(); 
+  }
+
+  async openVault() {
+    const modal = await this.modalController.create({
+      component: VaultPage,
+      componentProps: { 
+        hero: this.user
+      }
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+      }
+    );
+
+    return await modal.present();
   }
 
   logout() {

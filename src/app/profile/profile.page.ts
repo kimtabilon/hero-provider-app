@@ -19,7 +19,8 @@ import { finalize } from 'rxjs/operators';
 import { SchedulePage } from '../schedule/schedule.page';
 import { OrderPipe } from 'ngx-order-pipe';
 import { IonicSelectableComponent } from 'ionic-selectable';
- 
+import { VaultPage } from '../vault/vault.page';
+
 const STORAGE_KEY = 'my_images';
 
 @Component({
@@ -572,6 +573,22 @@ export class ProfilePage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async openVault() {
+    const modal = await this.modalController.create({
+      component: VaultPage,
+      componentProps: { 
+        hero: this.account.user
+      }
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+      }
+    );
+
+    return await modal.present();
   }
 
   loadStoredImages() {
