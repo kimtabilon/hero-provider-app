@@ -21,6 +21,8 @@
         <img class="img" src="{{photo}}"><br>
         <span class="label">Welcome</span><br>
         <span class="name" *ngIf="user != undefined">{{ profile["first_name"]  }}</span><br>
+        <!-- <span *ngIf="coorFound" class="coor">{{ coordinates.lat }}, {{ coordinates.lng }}</span>
+        <span *ngIf="!coorFound" (click)="getLocation()" class="coor">{{ coorBtn }}</span> -->
       </ion-col>
     </ion-row>
 

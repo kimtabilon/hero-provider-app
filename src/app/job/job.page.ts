@@ -14,6 +14,8 @@ import { EnvService } from 'src/app/services/env.service';
 import { ChatPage } from '../chat/chat.page';
 import { DirectionPage } from '../direction/direction.page';
 import { VaultPage } from '../vault/vault.page';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+
 @Component({
   selector: 'app-job',
   templateUrl: './job.page.html',
@@ -40,6 +42,9 @@ export class JobPage implements OnInit {
   jobpage:any = true;
   myjobstitle:any = 'Please wait..';
   completedtitle:any = 'Completed';
+  coorFound:any = false;
+  coordinates:any;
+  coorBtn:any = 'Refresh Coordinates';
 
   constructor(
     private http: HttpClient,
@@ -55,6 +60,7 @@ export class JobPage implements OnInit {
     private env: EnvService,
     public actionSheetController: ActionSheetController,
     public modalController: ModalController,
+    private geolocation: Geolocation,
   ) { 
   	this.menu.enable(true);	
   }
@@ -105,7 +111,42 @@ export class JobPage implements OnInit {
         this.app = val.data;
       }); 
     });
+
+    // this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
+    //   // resp.coords.latitude
+    //   // resp.coords.longitude
+    //   console.log('current position...');
+    //   console.log(resp.coords.latitude);
+    //   console.log(resp.coords.longitude);
+    //   this.coordinates = { lat: resp.coords.latitude, lng: resp.coords.longitude };
+
+    //   this.storage.set('current_position', this.coordinates);
+    //   this.coorFound = true;
+    //   console.log('startup get coordinates...');
+    // }).catch((error) => {
+    //   console.log('Error getting location', error);
+    // });
   }
+
+  // getLocation() {
+  //   this.coorBtn = 'Finding your location...'
+  //   this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
+  //     // resp.coords.latitude
+  //     // resp.coords.longitude
+  //     console.log('current position...');
+  //     console.log(resp.coords.latitude);
+  //     console.log(resp.coords.longitude);
+  //     this.coordinates = { lat: resp.coords.latitude, lng: resp.coords.longitude };
+
+  //     this.storage.set('current_position', this.coordinates);
+  //     this.coorFound = true;
+  //     console.log('startup get coordinates...');
+  //   }).catch((error) => {
+  //     console.log('Error getting location', error);
+  //     this.coorBtn = 'Location not found. Try again';
+  //   });
+  //   this.coorBtn = 'Try Again';
+  // }
 
   tapCompleted() {
     this.loading.present();

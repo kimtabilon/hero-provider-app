@@ -139,7 +139,7 @@
         <ion-label class="field-label"><ion-icon name="map" class="field-icon"></ion-icon></ion-label>
         <!-- <ion-input class="field" [(ngModel)]="account.address.province" [disabled]="account.settings.account_lock" placeholder="Province"></ion-input> -->
         
-        <ion-select placeholder="Province" [(ngModel)]="account.address.province" class="field" (ionChange)="tapProvince($event)" [disabled]="account.settings.account_lock" >
+        <ion-select [placeholder]="account.address.province" [(ngModel)]="account.address.province" class="field" (ionChange)="tapProvince($event)" [disabled]="account.settings.account_lock" >
           <ion-select-option *ngFor="let prov of provinces" value="{{prov.provDesc}}">{{prov.provDesc}}</ion-select-option>
         </ion-select>
 
@@ -150,7 +150,7 @@
         <ion-label class="field-label"><ion-icon name="pin" class="field-icon"></ion-icon></ion-label>
         <!-- <ion-input class="field" [(ngModel)]="account.address.city" [disabled]="account.settings.account_lock" placeholder="City"></ion-input> -->
       
-        <ion-select placeholder="City" [(ngModel)]="account.address.city" class="field" (ionChange)="tapCity($event)" [disabled]="account.settings.account_lock" >
+        <ion-select [placeholder]="account.address.city" [(ngModel)]="account.address.city" class="field" (ionChange)="tapCity($event)" [disabled]="account.settings.account_lock" >
           <ion-select-option *ngFor="let city of cities" value="{{city.citymunDesc}}">{{city.citymunDesc}}</ion-select-option>
         </ion-select>
       </ion-row>
@@ -160,7 +160,7 @@
         <ion-label class="field-label"><ion-icon name="bookmarks" class="field-icon"></ion-icon></ion-label>
         <!-- <ion-input class="field" [(ngModel)]="account.address.barangay" [disabled]="account.settings.account_lock" placeholder="Barangay"></ion-input> -->
         
-        <ion-select placeholder="Barangay" [(ngModel)]="account.address.barangay" class="field" (onChange)="tapBarangay($event)" [disabled]="account.settings.account_lock" >
+        <ion-select [placeholder]="account.address.barangay" [(ngModel)]="account.address.barangay" class="field" (onChange)="tapBarangay($event)" [disabled]="account.settings.account_lock" >
           <ion-select-option *ngFor="let brgy of barangays" value="{{brgy.brgyDesc}}">{{brgy.brgyDesc}}</ion-select-option>
         </ion-select>
       </ion-row>

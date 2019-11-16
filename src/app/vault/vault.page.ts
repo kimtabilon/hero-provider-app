@@ -78,14 +78,14 @@ export class VaultPage implements OnInit {
 
             for(let _job of this.jobs) {
             	console.log(_job);
-            	this.vault.overall_total += parseInt(_job.amount);
+            	this.vault.overall_total += parseInt(_job.hero_fee);
 
             	let _schedule_date = new Date(_job.schedule_date);
             	let _filter_date   = new Date(this.filter_date);
             	/*FILTER JOBS BY DATE*/
             	if(_schedule_date == _filter_date) {
             		this.vault.jobs.push(_job);
-            		this.vault.earnings += parseInt(_job.amount);
+            		this.vault.earnings += parseInt(_job.hero_fee); 
             		this.vault.hours += parseInt(_job.hours);
             		this.vault.count++;
             	}
@@ -132,7 +132,7 @@ export class VaultPage implements OnInit {
 		    	/*FILTER JOBS BY DATE*/
 		    	if(_schedule_month === _filter_month) {
 		    		this.vault.jobs.push(_job);
-		    		this.vault.earnings += parseInt(_job.amount);
+		    		this.vault.earnings += parseInt(_job.hero_fee);
 		    		this.vault.hours += parseInt(_job.hours);
 		    		this.vault.count++;
 		    	}
@@ -192,7 +192,7 @@ export class VaultPage implements OnInit {
 		    	/*FILTER JOBS BY DATE*/
 		    	if(_schedule_year === _filter_year) {
 		    		this.vault.jobs.push(_job);
-		    		this.vault.earnings += parseInt(_job.amount);
+		    		this.vault.earnings += parseInt(_job.hero_fee);
 		    		this.vault.hours += parseInt(_job.hours);
 		    		this.vault.count++;
 		    	}
@@ -218,7 +218,7 @@ export class VaultPage implements OnInit {
     	/*FILTER JOBS BY DATE*/
     	if(_schedule_date === _filter_date) {
     		this.vault.jobs.push(_job);
-    		this.vault.earnings += parseInt(_job.amount);
+    		this.vault.earnings += parseInt(_job.hero_fee);
     		this.vault.hours += parseInt(_job.hours);
     		this.vault.count++;
     	}
@@ -241,7 +241,7 @@ export class VaultPage implements OnInit {
     	/*FILTER JOBS BY DATE*/
     	if(_schedule_month === _filter_month) {
     		this.vault.jobs.push(_job);
-    		this.vault.earnings += parseInt(_job.amount);
+    		this.vault.earnings += parseInt(_job.hero_fee);
     		this.vault.hours += parseInt(_job.hours);
     		this.vault.count++;
     	}
@@ -264,7 +264,7 @@ export class VaultPage implements OnInit {
     	/*FILTER JOBS BY DATE*/
     	if(_schedule_month === _filter_month) {
     		this.vault.jobs.push(_job);
-    		this.vault.earnings += parseInt(_job.amount);
+    		this.vault.earnings += parseInt(_job.hero_fee);
     		this.vault.hours += parseInt(_job.hours);
     		this.vault.count++;
     	}
@@ -287,7 +287,7 @@ export class VaultPage implements OnInit {
     	/*FILTER JOBS BY DATE*/
     	if(_schedule_year === _filter_year) {
     		this.vault.jobs.push(_job);
-    		this.vault.earnings += parseInt(_job.amount);
+    		this.vault.earnings += parseInt(_job.hero_fee);
     		this.vault.hours += parseInt(_job.hours);
     		this.vault.count++;
     	}

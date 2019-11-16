@@ -39,6 +39,7 @@ import {VaultPageModule} from './vault/vault.module';
 import { IonicSelectableModule } from 'ionic-selectable';
 
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -77,6 +78,7 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
     CallNumber,
     EmailComposer,
     OneSignal,
+    Geolocation
   ],
   bootstrap: [AppComponent]
 })
