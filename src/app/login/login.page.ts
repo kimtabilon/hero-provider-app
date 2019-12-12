@@ -12,6 +12,9 @@ import { EnvService } from 'src/app/services/env.service';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { Market } from '@ionic-native/market/ngx';
 
+import { FacebookPage } from '../facebook/facebook.page';
+import { GooglePage } from '../google/google.page';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -58,6 +61,38 @@ export class LoginPage implements OnInit {
         this.navCtrl.navigateRoot('/tabs/home');
       }
     });
+  }
+
+  async facebook() {
+    const modal = await this.modalController.create({
+      component: FacebookPage,
+      componentProps: { 
+        user: {}
+      }
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        let response:any = data;
+    });
+
+    return await modal.present();
+  }
+
+  async google() {
+    const modal = await this.modalController.create({
+      component: GooglePage,
+      componentProps: { 
+        user: {}
+      }
+    });
+
+    modal.onDidDismiss()
+      .then((data) => {
+        let response:any = data;
+    });
+
+    return await modal.present();
   }
 
   login(form: NgForm) {

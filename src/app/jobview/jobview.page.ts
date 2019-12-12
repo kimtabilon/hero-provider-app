@@ -210,11 +210,15 @@ export class JobviewPage implements OnInit {
        {
          job_id: this.job.id,
          hero_id: this.job.hero_id,
-         from: 'client',
+         from: 'provider',
        }
     )
     .subscribe(data => {
-      this.enableReview = false;
+      this.enableReview = true;
+      let response:any = data;
+      if(response.data.length) {
+        this.enableReview = false;
+      }
     },error => { 
       this.enableReview = true;
     },() => { });
@@ -450,6 +454,7 @@ export class JobviewPage implements OnInit {
     modal.onDidDismiss()
       .then((data) => {
         let response:any = data;
+        this.enableReview = false;
     });
 
     return await modal.present();

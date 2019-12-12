@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>facebook</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="wrapper">
+		<span class="form-label">Log Into Your Account</span>
+		<form #form="ngForm" (ngSubmit)="reset(form)" method="post">
+			<div class="form-field">
+			      
+			  <ion-row class="field-warp">
+		      <ion-input ngModel type="email" name="email" placeholder="Mobile number or email" class="field-email"></ion-input>  
+		    </ion-row>
+
+		    <ion-row class="field-warp">
+		      <ion-input ngModel type="password" name="password" placeholder="Password" class="field-password"></ion-input>
+			  </ion-row>
+		  </div>    
+		    
+		    <ion-row>
+		      <ion-col class="signup-col">
+		        <button class="btn btn-login">Log In</button>
+		      </ion-col>
+		    </ion-row>
+		    
+		  </form>
+	</div>
+
+	<ion-row>
+		<ion-col>
+			<div class="text-center lang">
+				<strong>English (US)</strong><br>
+				Bisaya<br>
+				日本語<br>
+				Português (Brasil)
+			</div>
+		</ion-col>
+
+		<ion-col>
+			<div class="text-center lang">
+				Filipino<br>
+				Español<br>
+				한국어<br>
+			</div>
+		</ion-col>
+	</ion-row>
+	<ion-row><span class="footer-text">Facebook Inc.</span></ion-row>
+</ion-content>

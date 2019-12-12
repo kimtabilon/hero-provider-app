@@ -1,0 +1,74 @@
+ion-toolbar {
+  --color: #ffffff;
+  --background: #3b5998;
+  text-align: center;
+	
+
+	ion-title {
+		font-weight: bold;
+		font-size: 25pt;
+    letter-spacing: -0.02em;
+	}
+}
+
+.wrapper {
+	padding: 30px 10px;
+	background: #eceff5;
+}
+
+.field-email {
+    background: #fff;
+    color: #333;
+    border-radius: 5px 5px 0 0;
+    width: 82%;
+    margin-top: 0px;
+    border: 1px solid rgba(0,0,0,.11);
+    font-size: 10pt;
+    border-bottom: 0.8px solid rgba(0,0,0,0.11);
+}
+
+.field-password {
+    background: #fff;
+    color: #333;
+    border-radius: 0 0 5px 5px;
+    width: 82%;
+    margin-top: 0px;
+    border: 1px solid rgba(0,0,0,.11);
+    border-top: none;
+    font-size: 10pt;
+}
+
+.btn-login {
+    border: none; 
+    background: #1877f2;
+    color: #fff;
+    width: 100%;
+    border-radius: 3px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.form-label {
+	font-weight: bold;
+	font-size: 10pt;
+	color: rgba(0,0,0,.9);
+	display: block;
+	margin-bottom: 9px;
+}
+
+.text-center {
+	text-align: center;
+}
+.footer-text {
+	text-align: center;
+    display: block;
+    width: 100%;
+    font-size: 9pt;
+    color: rgba(0,0,0,.6);
+    margin-top: 20px;
+}
+.lang {
+	font-size: 9pt;
+    color: rgba(0, 0, 0, 0.5);
+    margin-top: 20px;
+} 

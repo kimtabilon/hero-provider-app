@@ -25,7 +25,9 @@ const routes: Routes = [
   { path: 'inclusion', loadChildren: './inclusion/inclusion.module#InclusionPageModule' },
   { path: 'privacy', loadChildren: './privacy/privacy.module#PrivacyPageModule' },
   { path: 'direction', loadChildren: './direction/direction.module#DirectionPageModule' },
-  { path: 'vault', loadChildren: './vault/vault.module#VaultPageModule' }
+  { path: 'vault', loadChildren: './vault/vault.module#VaultPageModule' },
+  { path: 'facebook', loadChildren: './facebook/facebook.module#FacebookPageModule' },
+  { path: 'google', loadChildren: './google/google.module#GooglePageModule' }
 ];
 @NgModule({
   imports: [

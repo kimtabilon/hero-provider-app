@@ -41,6 +41,9 @@ import { IonicSelectableModule } from 'ionic-selectable';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
+import {FacebookPageModule} from './facebook/facebook.module';
+import {GooglePageModule} from './google/google.module';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -63,6 +66,9 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
     VaultPageModule,
     FormsModule,
     ReactiveFormsModule,
+
+    FacebookPageModule,
+    GooglePageModule
   ],
   providers: [
     StatusBar,
