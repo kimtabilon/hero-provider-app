@@ -275,18 +275,7 @@ export class RegisterPage implements OnInit {
           cssClass: 'secondary',
           handler: () => {
             this.notifyRegistrationSuccess(email, password);
-            this.http.post(this.env.API_URL + 'hero/mail/resendactivation',{password: password, email: email, app_key: this.env.APP_ID})
-              .subscribe(data => {
-                  let response:any = data;
-                  this.loading.dismiss();
-                  this.alertService.presentToast("Check your Email for your Activation Link");
-                  this.authService.log(response.data.id, 'resend_activation', 'Resend activation link');
-              },error => { 
-                console.log(error);
-                this.authService.http_error(error);
-                this.loading.dismiss();
-                this.alertService.presentToast("Account not Found");
-              });
+            this.resend(email, password);
           }
         },
         {
@@ -298,6 +287,22 @@ export class RegisterPage implements OnInit {
       ]
     });
     await alert.present();
+  }
+
+  resend(email, password) {
+    this.http
+    .post(this.env.API_URL + 'hero/mail/resendactivation',{password: password, email: email, app_key: this.env.APP_ID})
+    .subscribe(data => {
+        let response:any = data;
+        this.loading.dismiss();
+        // this.alertService.presentToast("Check your Email for your Activation Link");
+        this.authService.log(response.data.id, 'resend_activation', 'Resend activation link');
+    },error => { 
+      console.log(error);
+      this.authService.http_error(error);
+      this.loading.dismiss();
+      this.alertService.presentToast("Account not Found");
+    });
   }
 
   onSubmit(values) {
@@ -335,6 +340,7 @@ export class RegisterPage implements OnInit {
             this.authService.log(response.data.hero.id, 'registered', 'New account created');
             this.loading.dismiss();
             this.notifyRegistrationSuccess(values.email, values.matching_passwords.password);
+            this.resend(values.email, values.matching_passwords.password);
           },
           error => {
             this.signup_btn = 'Try Again';
@@ -355,6 +361,7 @@ export class RegisterPage implements OnInit {
       });
 
     } else {
+      this.signup_btn = 'Try Again';
       let message:any = 'Input all required fields. ';
       for (let key in this.validation_messages) {
         let validations:any = this.validation_messages[key];
