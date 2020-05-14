@@ -133,7 +133,7 @@ export class FormPage implements OnInit {
   }
 
   async tapNext() {
-    if(this.heroOption.pay_per >= 200) {
+    if(this.heroOption.pay_per >= 150) {
       const alert = await this.alertController.create({
         header: 'Save '+this.option.name+'?',
         message: 'For the meantime, service will be inactive. Admin will notify you when its active. Continue if you want to save this service.',

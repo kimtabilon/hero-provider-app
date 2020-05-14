@@ -30,6 +30,12 @@
         <ion-icon name="person"></ion-icon>
         <ion-label>Profile</ion-label>
       </ion-segment-button>
+      
+      <ion-segment-button value="info" checked>
+        <ion-icon name="ribbon"></ion-icon>
+        <ion-label>My Info</ion-label>
+      </ion-segment-button>
+
       <ion-segment-button value="settings">
         <ion-icon name="settings"></ion-icon>
         <ion-label>Settings</ion-label>
@@ -46,6 +52,29 @@
     </ion-segment>
   </div>  
   
+  <ion-list lines="none" *ngIf="page=='info'">
+    <div class="field-outer-wrap">
+      <ion-row padding class="form-header"><ion-col class="text-center">INFORMATION</ion-col></ion-row>
+      <ion-row padding class="field-wrap">
+        <span class="field-text">Educational Background</span>
+        <ion-label class="field-label"><ion-icon name="star" class="field-icon"></ion-icon></ion-label>
+        <ion-textarea class="field" [(ngModel)]="account.hero_info.educational_background" placeholder="Educational Background"></ion-textarea>
+      </ion-row>
+
+      <ion-row padding class="field-wrap">
+        <span class="field-text">Certification</span>
+        <ion-label class="field-label"><ion-icon name="medal" class="field-icon"></ion-icon></ion-label>
+        <ion-textarea class="field" [(ngModel)]="account.hero_info.certification" placeholder="Certification"></ion-textarea>
+      </ion-row>
+
+      <ion-row padding class="field-wrap">
+        <span class="field-text">Work Experience</span>
+        <ion-label class="field-label"><ion-icon name="thumbs-up" class="field-icon"></ion-icon></ion-label>
+        <ion-textarea class="field" [(ngModel)]="account.hero_info.work_experience" placeholder="Work Experience"></ion-textarea>
+      </ion-row>
+    </div>
+    <button class="btn btn-login" (click)="tapUpdateinfo()" >SAVE INFORMATION</button>
+  </ion-list>
   <ion-list lines="none" *ngIf="page=='profile'">
     <div class="field-outer-wrap">
       <ion-row padding class="form-header"><ion-col class="text-center">ACCOUNT</ion-col></ion-row>

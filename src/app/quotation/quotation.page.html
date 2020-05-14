@@ -94,6 +94,12 @@
         <ion-label class="field-label"><ion-icon name="add" class="field-icon"></ion-icon></ion-label>
         <ion-input type="number" class="field" [(ngModel)]="quote.amount" placeholder="Amount"></ion-input>
       </ion-row>
+      <ion-row padding class="field-wrap">
+        <span class="field-text">Additional Note</span>
+        <ion-label class="field-label"><ion-icon name="add" class="field-icon"></ion-icon></ion-label>
+        <!-- <ion-input type="number" class="field" [(ngModel)]="quote.add_notes" placeholder="Note"></ion-input> -->
+        <ion-textarea [(ngModel)]="quote.add_notes" placeholder="Notes" class="field" ></ion-textarea>
+      </ion-row>
     </div>  
     <button class="btn btn-login" (click)="tapNext()" >SUBMIT QUOTE</button>
     <button class="btn btn-signup" (click)="tapDeny()" >CANCEL</button>

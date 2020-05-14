@@ -92,7 +92,9 @@ export class InboxPage implements OnInit {
   async tapNoti(noti) {
     let btns:any = [];
 
-    if(noti.type == 'Available Job' || noti.type == 'For Confirmation'){
+    console.log(noti);
+
+    if(noti.type == 'Available Job' || noti.type == 'For Confirmation' || noti.type == 'Request Qoute'){
       btns.push({
         text: 'View Job',
         icon: 'arrow-dropright-circle',
@@ -106,6 +108,10 @@ export class InboxPage implements OnInit {
             case "For Confirmation":
               route = '/tabs/jobview';
               break;  
+
+            case "Request Qoute":
+              route = '/tabs/quotation';
+              break;   
 
             default:
               this.loading.dismiss();

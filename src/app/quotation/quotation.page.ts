@@ -41,7 +41,8 @@ export class QuotationPage implements OnInit {
     hero_id: '',
     job_id: '',
     amount: '0',
-    noti_id: '0'
+    noti_id: '0',
+    add_notes:''
   };
 
   constructor(

@@ -101,7 +101,7 @@ export class LoginPage implements OnInit {
     {
       this.authService.login(form.value.email, form.value.password).subscribe(
         data => {
-          // console.log(data);
+          console.log(data);
           this.loading.dismiss();
           let response:any = data;
           this.storage.set('hero', response);
@@ -150,6 +150,7 @@ export class LoginPage implements OnInit {
           // this.alertService.presentToast("Logged In");
         },
         error => {
+          console.log(error);
           this.loading.dismiss();
           this.alertService.presentToast("Wrong Email/Password or Inactive account");
           // this.alertService.presentToast(error.message);

@@ -73,6 +73,13 @@ export class ProfilePage implements OnInit {
       province: '',
       country: '',
       zip: ''
+    },
+    hero_info: {
+      id: '',
+      hero_id: '',
+      educational_background: '',
+      certification: '',
+      work_experience: ''
     }
   };
 
@@ -125,6 +132,7 @@ export class ProfilePage implements OnInit {
     this.http.post(this.env.HERO_API + 'hero/login',{email: this.account.user.email, password:  this.account.user.password})
     .subscribe(data => {
         let response:any = data;
+        console.log(response);
         this.storage.set('hero', response);
         // this.user = response.data;
         this.ionViewWillEnter();
@@ -162,6 +170,10 @@ export class ProfilePage implements OnInit {
       this.hero = val;
       this.account.user = val.data;
       this.account.profile = val.data.profile;
+      this.account.hero_info = val.data.hero_info;
+
+      console.log('val.data.hero_info');
+      console.log(val.data.hero_info);
 
       this.account.user_id = this.account.user.id;
       this.account.app_key = this.env.APP_ID;
@@ -191,6 +203,20 @@ export class ProfilePage implements OnInit {
           number: ''
         };
       }
+
+      // console.log(this.account.hero_info);
+
+      if( this.account.hero_info===null || this.account.hero_info.length == 0) {
+        this.account.hero_info = {
+          id: '',
+          hero_id: this.account.user.id,
+          educational_background: '',
+          certification: '',
+          work_experience: ''
+        };
+      } 
+
+
 
       if(this.account.profile.photo!==null) {
       	this.photo = this.env.IMAGE_URL + 'uploads/' + this.account.profile.photo;
@@ -336,6 +362,12 @@ export class ProfilePage implements OnInit {
         this.loading.dismiss();
         break;
 
+      case "info":
+        this.loading.present();
+        this.page='info';
+        this.loading.dismiss();
+        break;  
+
       case "settings":
         this.loading.present();
 
@@ -402,6 +434,25 @@ export class ProfilePage implements OnInit {
         this.authService.http_error(error);
         this.alertService.presentToast("Server not responding!");
     },() => { this.alertService.presentToast("Profile updated!"); });  
+
+    this.loading.dismiss();
+  }
+
+  tapUpdateinfo() {
+    this.loading.present();
+    console.log(this.account.hero_info);
+
+    this.http.post(this.env.HERO_API + 'hero/info/save', this.account.hero_info)
+      .subscribe(data => { 
+        let res:any = data;
+        console.log(res.data);
+        this.account.hero_info = res.data
+        // this.storage.set('hero', data);
+      },error => { 
+        this.authService.http_error(error);
+        this.alertService.presentToast("Server not responding!");
+    },() => { this.alertService.presentToast("Information Updated Successfully!"); });  
+
 
     this.loading.dismiss();
   }

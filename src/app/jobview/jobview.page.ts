@@ -253,7 +253,7 @@ export class JobviewPage implements OnInit {
               .subscribe(data => {
                 this.loading.dismiss();
               },error => { 
-                this.alertService.presentToast("Client removed this job.");
+                // this.alertService.presentToast("Client removed this job.");
                 
                 this.http.post(this.env.HERO_API + 'inboxes/hide',{id: this.noti_id})
                 .subscribe(data => {
@@ -264,7 +264,7 @@ export class JobviewPage implements OnInit {
                   console.log(error);
                 },() => { 
                   this.loading.dismiss();
-                  this.navCtrl.navigateRoot('/tabs/inbox'); 
+                  this.navCtrl.navigateRoot('/tabs/job'); 
                 });
 
                 this.loading.dismiss();
@@ -369,8 +369,9 @@ export class JobviewPage implements OnInit {
     this.http.post(this.env.HERO_API + 'jobs/done',{id: this.job.id})
       .subscribe(data => {
       },error => { 
-        this.alertService.presentToast("Server not responding!");
-        console.log(error);
+        // this.alertService.presentToast("Server not responding!");
+        // console.log(error);
+        this.navCtrl.navigateRoot('/tabs/job'); 
       },() => { 
         this.navCtrl.navigateRoot('/tabs/job'); 
       });  
