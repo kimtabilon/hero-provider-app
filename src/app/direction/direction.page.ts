@@ -33,6 +33,7 @@ export class DirectionPage implements OnInit, AfterViewInit {
   ngOnInit() {
 
   }
+  
   ngAfterViewInit(): void {
 
     let options:any = {
@@ -89,8 +90,6 @@ export class DirectionPage implements OnInit, AfterViewInit {
     //     //       data.coords.latitude,
     //     //       data.coords.longitude)
     //     // );
-
-
     //   });
 
     // }).catch((error) => {
@@ -113,9 +112,6 @@ export class DirectionPage implements OnInit, AfterViewInit {
       center: {lat: 10.3235584, lng: 123.91956479999999}
     });
     this.directionsDisplay.setMap(map);
-    
-    
-
 
     this.directionsDisplay.setPanel(this.directionsPanel.nativeElement);
     this.directionsService.route({
@@ -132,7 +128,6 @@ export class DirectionPage implements OnInit, AfterViewInit {
         window.alert('Directions request failed due to ' + status);
       }
     });
-
     
   }
 
