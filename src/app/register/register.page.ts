@@ -148,7 +148,7 @@ export class RegisterPage implements OnInit {
       birthday: new FormControl('', Validators.required),
       birthyear: new FormControl('', Validators.required),
       birthmonth: new FormControl('', Validators.required),
-      // gender: new FormControl('', Validators.required),
+      gender: new FormControl(''),  
       country_phone: this.country_phone_group,
 
       street: new FormControl(''),
